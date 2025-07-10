@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="da">
+<head>
+  <meta charset="UTF-8">
+  <title>D&D Kryptex</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      text-align: center;
+      background: radial-gradient(ellipse at center, #232526 0%, #282828 100%);
+      color: #f8f8f8;
+      min-height: 100vh;
+    }
+    h1 {
+      font-size: 2.6em;
+      margin-top: 30px;
+      letter-spacing: 2px;
+      text-shadow: 0 2px 10px #000;
+    }
+    .desc {
+      color: #b9b9b9;
+      margin-bottom: 30px;
+    }
+    .cryptex-box {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 16px;
+      margin: 40px 0;
+      background: #18181888;
+      border-radius: 16px;
+      padding: 28px 20px;
+      box-shadow: 0 8px 32px #0008;
+      border: 2px solid #444;
+      animation: glow 2s infinite alternate;
+    }
+    @keyframes glow {
+      from { box-shadow: 0 0 18px #1a7a9c; }
+      to { box-shadow: 0 0 36px #a3d5e5; }
+    }
+    .ring {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      background: linear-gradient(135deg, #2e3d4a 60%, #4c5f6e 100%);
+      border-radius: 50%;
+      box-shadow: 0 3px 16px #000a;
+      width: 70px;
+      height: 70px;
+      justify-content: center;
+      position: relative;
+      border: 2px solid #bfb06b;
+      transition: border-color 0.3s;
+    }
+    .ring.active {
+      border-color: #e7d86c;
+    }
+    .letter {
+      font-size: 2.2em;
+      font-family: monospace;
+      font-weight: bold;
+      color: #ffe59c;
+      letter-spacing: 1px;
+      margin-bottom: 8px;
+      text-shadow: 0 1px 6px #000a;
+      user-select: none;
+    }
+    .arrows {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      align-items: center;
+      margin-top: 4px;
+    }
+    .arrow-btn {
+      background: #bfb06b;
+      border: none;
+      border-radius: 8px;
+      color: #111;
+      font-size: 1.2em;
+      font-weight: bold;
+      width: 28px;
+      height: 24px;
+      cursor: pointer;
+      margin: 0;
+      transition: background 0.15s;
+      box-shadow: 0 1px 2px #2228;
+    }
+    .arrow-btn:active {
+      background: #fde77b;
+    }
+    .open-btn {
+      padding: 12px 34px;
+      font-size: 1.3em;
+      background: linear-gradient(90deg, #e7d86c 0%, #bfb06b 100%);
+      color: #181818;
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      font-weight: bold;
+      margin-top: 16px;
+      margin-bottom: 10px;
+      box-shadow: 0 2px 12px #0005;
+      letter-spacing: 2px;
+      transition: background 0.2s;
+    }
+    .open-btn:hover {
+      background: linear-gradient(90deg, #fde77b 0%, #bfb06b 100%);
+    }
+    #resultat {
+      margin-top: 22px;
+      font-size: 1.2em;
+      color: #ffe59c;
+      min-height: 2.2em;
+      text-shadow: 0 1px 6px #000a;
+      font-family: 'Segoe UI', monospace;
+    }
+    .secret-scroll {
+      margin: 30px auto 0;
+      width: 270px;
+      background: #fef6e7;
+      border: 2px solid #c2b67c;
+      border-radius: 12px;
+      box-shadow: 0 4px 22px #0005;
+      padding: 20px;
+      color: #6d5a21;
+      font-family: 'IM Fell English', serif;
+      font-size: 1.2em;
+      display: none;
+      animation: scroll-in 1s;
+    }
+    @keyframes scroll-in {
+      from { opacity: 0; transform: scaleY(0.3) translateY(50px);}
+      to { opacity: 1; transform: scaleY(1) translateY(0);}
+    }
+  </style>
+</head>
+<body>
+  <h1>🧙‍♂️ D&D Kryptex</h1>
+  <p class="desc">Drej ringene og find kodeordet for at åbne det magiske kryptex!</p>
+  <div class="cryptex-box" id="rings"></div>
+  <button class="open-btn" onclick="checkCode()">Åbn Kryptex</button>
+  <div id="resultat"></div>
+  <div class="secret-scroll" id="scroll">
+    <b>Hemmeligt budskab:</b><br>
+    <i>Her kan du sætte din egen besked til spillerne!<br>
+    Må eventyret fortsætte...</i>
+  </div>
+
+  <script>
+    // --- SETTINGS ---
+    const wordLength = 6; // Antal bogstaver i kodeordet
+    const løsning = "GLEMT"; // Bemærk: "GLEMT" er kun 5 bogstaver, men vi laver det 6 for at få det til at ligne "GLEMTE" (evt. tilføj et ekstra bogstav). Hvis det kun skal være "GLEMT", så sæt wordLength = 5.
+    const løsningStr = "GLEMT"; // Det rigtige kodeord
+    const bogstaver = "ABCDEFGHIJKLMNOPQRSTUVWXYZÆØÅ";
+
+    // --- State ---
+    let ringState = Array(wordLength).fill(0); // Index i bogstaver
+
+    // --- Build rings ---
+    const ringContainer = document.getElementById("rings");
+    for (let i = 0; i < wordLength; i++) {
+      const ring = document.createElement("div");
+      ring.className = "ring";
+      ring.tabIndex = 0;
+      ring.setAttribute('data-ring', i);
+
+      const letter = document.createElement("div");
+      letter.className = "letter";
+      letter.innerText = bogstaver[0];
+      ring.appendChild(letter);
+
+      const arrows = document.createElement("div");
+      arrows.className = "arrows";
+
+      const upBtn = document.createElement("button");
+      upBtn.className = "arrow-btn";
+      upBtn.innerHTML = "▲";
+      upBtn.onclick = () => turnRing(i, 1);
+
+      const downBtn = document.createElement("button");
+      downBtn.className = "arrow-btn";
+      downBtn.innerHTML = "▼";
+      downBtn.onclick = () => turnRing(i, -1);
+
+      arrows.appendChild(upBtn);
+      arrows.appendChild(downBtn);
+      ring.appendChild(arrows);
+
+      ringContainer.appendChild(ring);
+
+      // Keyboard support
+      ring.addEventListener('focus', () => ring.classList.add("active"));
+      ring.addEventListener('blur', () => ring.classList.remove("active"));
+      ring.addEventListener('keydown', e => {
+        if (e.key === "ArrowUp") { turnRing(i, 1); e.preventDefault(); }
+        else if (e.key === "ArrowDown") { turnRing(i, -1); e.preventDefault(); }
+      });
+    }
+
+    // --- Logic to turn rings ---
+    function turnRing(idx, dir) {
+      ringState[idx] = (ringState[idx] + dir + bogstaver.length) % bogstaver.length;
+      updateRing(idx);
+    }
+    function updateRing(idx) {
+      const ring = ringContainer.children[idx];
+      ring.querySelector('.letter').innerText = bogstaver[ringState[idx]];
+    }
+
+    // --- Check code ---
+    function checkCode() {
+      const valgt = ringState.map(idx => bogstaver[idx]).join('');
+      const resultat = document.getElementById("resultat");
+      const scroll = document.getElementById("scroll");
+      // Gør det muligt at indtaste både GLEMT eller GLEMTE hvis ønsket:
+      if (valgt === løsningStr || valgt === løsningStr + "E") {
+        resultat.innerHTML = "🔓 Kryptex åbnet! En gammel pergamentrulle ruller ud...";
+        scroll.style.display = 'block';
+      } else {
+        resultat.innerHTML = "❌ Forkert kode. Prøv igen!";
+        scroll.style.display = 'none';
+      }
+    }
+  </script>
+</body>
+</html>
