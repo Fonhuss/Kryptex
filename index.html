@@ -5,19 +5,24 @@
   <title>Kryptex</title>
   <style>
     body {
-      background: #eae8e3;
       min-height: 100vh;
       display: flex;
       flex-direction: column;
       align-items: center;
       font-family: 'Segoe UI', sans-serif;
       margin: 0;
+      /* NY D&D AGTIG BAGGRUND */
+      background: radial-gradient(ellipse at 50% 40%, #4e3620 0%, #2b1a0d 100%);
+      background-attachment: fixed;
+      /* Brug evt. et let tekstur-billede: */
+      /* background-image: url('https://www.transparenttextures.com/patterns/wood-pattern.png'), radial-gradient(ellipse at 50% 40%, #4e3620 0%, #2b1a0d 100%); */
+      /* background-blend-mode: multiply; */
     }
     h1 {
       margin-top: 30px;
       font-size: 2.4em;
-      color: #6d5a21;
-      text-shadow: 0 2px 10px #d2bd7f77;
+      color: #e2c17d;
+      text-shadow: 0 2px 10px #2b1a0d, 0 0 20px #0009;
     }
     .kryptex-outer {
       display: flex;
@@ -123,15 +128,16 @@
     #resultat {
       margin-top: 10px;
       font-size: 1.2em;
-      color: #6d5a21;
+      color: #e2c17d;
       min-height: 2.2em;
       font-family: 'Segoe UI', monospace;
+      text-shadow: 0 1px 10px #2b1a0d, 0 0 5px #0007;
     }
     .secret-scroll {
       margin: 30px auto 0;
       width: 350px;
       max-width: 95vw;
-      background: #fdf6c1;
+      background: #f0e5c0;
       border: 2px solid #bba753;
       border-radius: 12px;
       box-shadow: 0 4px 22px #a58b3a55;
@@ -148,7 +154,7 @@
       to { opacity: 1; transform: scaleY(1) translateY(0);}
     }
     .clues {
-      background: #f7e9b5;
+      background: #4e3620e0;
       border: 1.5px solid #bba753;
       border-radius: 10px;
       padding: 18px 28px 12px 28px;
@@ -157,16 +163,18 @@
       width: 380px;
       max-width: 96vw;
       box-shadow: 0 2px 10px #bba75344;
-      color: #4c3e1f;
+      color: #e2c17d;
       font-family: 'IM Fell English', serif;
+      text-shadow: 0 1px 8px #2b1a0d, 0 0 1px #000a;
     }
     .clues h2 {
       font-size: 1.2em;
       margin-top: 0;
       margin-bottom: 10px;
       font-family: 'Segoe UI', sans-serif;
-      color: #6d5a21;
+      color: #e2c17d;
       letter-spacing: 1px;
+      text-shadow: 0 1px 8px #2b1a0d, 0 0 1px #000a;
     }
     .clues ul {
       padding-left: 15px;
