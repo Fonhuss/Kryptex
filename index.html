@@ -43,13 +43,78 @@
       letter-spacing: 1px;
       text-shadow: 0 1px 8px #2b1a0d, 0 0 1px #000a;
     }
-    .clues ul {
-      padding-left: 15px;
-      margin: 0;
-    }
-    .clues li {
+    .revealed {
       margin-bottom: 13px;
       line-height: 1.4;
+      background: #1b1208d0;
+      padding: 12px 16px;
+      border-radius: 7px;
+      border: 1.5px solid #bba753;
+      box-shadow: 0 2px 10px #0006;
+      margin-top: 10px;
+      color: #ffe5a5;
+      font-family: 'IM Fell English', serif;
+    }
+    .hiddenclue {
+      margin-bottom: 13px;
+      line-height: 1.4;
+      background: #2b1a0d;
+      padding: 12px 16px;
+      border-radius: 7px;
+      border: 1.5px solid #555;
+      box-shadow: 0 2px 10px #0003;
+      margin-top: 10px;
+      color: #888;
+      font-style: italic;
+      text-align: center;
+      font-family: 'IM Fell English', serif;
+    }
+    .clue-label {
+      font-size: 1.14em;
+      color: #e2c17d;
+      font-family: 'Segoe UI', sans-serif;
+      font-weight: bold;
+      display: block;
+    }
+    .clue-input-row {
+      margin: 14px 0 0 0;
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+      align-items: center;
+    }
+    .clue-inp {
+      padding: 8px 12px;
+      border-radius: 7px;
+      border: 1.5px solid #bba753;
+      background: #f7e9b5;
+      color: #4e3620;
+      font-size: 1.1em;
+      width: 140px;
+      outline: none;
+      font-family: inherit;
+    }
+    .clue-btn {
+      background: linear-gradient(90deg, #f7e9b5 0%, #bba753 100%);
+      border: none;
+      border-radius: 8px;
+      color: #6d5a21;
+      font-size: 1.02em;
+      font-weight: bold;
+      padding: 8px 22px;
+      cursor: pointer;
+      transition: background 0.18s;
+      box-shadow: 0 2px 10px #bba75344;
+      font-family: inherit;
+    }
+    .clue-btn:active {
+      background: #f7e9b5;
+    }
+    .clue-success {
+      color: #76e06a;
+      font-size: 1em;
+      margin-top: 7px;
+      text-align: center;
     }
     .kryptex-outer {
       display: flex;
@@ -246,25 +311,13 @@
 <body>
   <h1>Kryptex</h1>
   <div class="clues">
-    <h2>Ledetråde</h2>
-    <ul>
-      <li>🗺️ <b>Kaptajnens Kahyt:</b>  
-        <i>“Hun hviskede mit navn, men jeg glemte det, så snart jeg så hendes øjne. Alt hvad der blev tilbage… var fornemmelsen af noget jeg burde have husket.”</i>
-      </li>
-      <li>🐚 <b>Et spejl i besætningskvarteret:</b>  
-        <i>“De ser dig ikke. Men dine bånd følger med i spejlet.”</i>
-      </li>
-      <li>📦 <b>En glemt kiste i lastrummet:</b>  
-        <i>“Skyggens gave: at du husker, det andre ønsker glemt.”</i>
-      </li>
-      <li>📜 <b>Sømands sang på sejlklæde:</b>  
-        <i>“Hvad havet har glemt, gemmer hun i mørket.<br>
-        Hvad vi har svigtet, venter i stilheden.<br>
-        Et navn? Nej. Et bånd.<br>
-        Et minde? Måske. En…”<br>
-        <b>(– Resten af strofen er flået væk, men der står kun ét ord i hjørnet: “ERINDR…”)</b></i>
-      </li>
-    </ul>
+    <h2>Find ledetrådene – Indtast kodeord</h2>
+    <div id="cluesArea"></div>
+    <div class="clue-input-row">
+      <input class="clue-inp" id="clueInput" type="text" placeholder="Indtast kodeord..." autocomplete="off" />
+      <button class="clue-btn" onclick="unlockClue()">Lås op</button>
+    </div>
+    <div id="clueSuccess" class="clue-success"></div>
   </div>
   <div class="kryptex-outer">
     <span class="kryptex-endcap">◀</span>
@@ -303,7 +356,89 @@ Glem det ikke.
     <span style="font-size:1.2em;">🗝️</span>
   </div>
   <script>
-    // --- SETTINGS ---
+    // SVÆRE KODER TIL LEDETRÅDE
+    const cluesData = [
+      {
+        code: "nautica",
+        label: "🗺️ Kaptajnens Kahyt",
+        clue: `En gammel logbog er delvist ødelagt af vand.<br><br>
+        <i>“Hun hviskede mit navn, men jeg glemte det, så snart jeg så hendes øjne. Alt hvad der blev tilbage… var fornemmelsen af noget jeg burde have husket.”</i>`
+      },
+      {
+        code: "genskin",
+        label: "🐚 Et spejl i besætningskvarteret",
+        clue: `<i>“De ser dig ikke. Men dine bånd følger med i spejlet.”</i>`
+      },
+      {
+        code: "forseglet",
+        label: "📦 En glemt kiste i lastrummet",
+        clue: `En æske med et spejlskår, en hårlok og en ravn fjer. Indvendigt i låget er der skrevet med ridsede bogstaver:<br><br>
+        <i>“Skyggens gave: at du husker, det andre ønsker glemt.”</i>`
+      },
+      {
+        code: "firkant",
+        label: "📄 Lille sort Æske",
+        clue: `Indhold i æsken: En sammenfoldet note og en slidt messingplade.<br><br>
+        <b>Noten (håndskrift – samme som 'M'):</b><br>
+        <i>“Du husker det ikke – ikke sådan som det skete.<br>
+        Men noget i dig reagerer hver gang du ser det mønster.<br>
+        Fire hjørner.<br>
+        Én vej væk.<br>
+        Og det ord… det var ikke hendes navn.<br>
+        Det var løftet vi glemte.”</i>`
+      }
+    ];
+
+    let cluesRevealed = [false, false, false, false];
+    function renderClues() {
+      const area = document.getElementById("cluesArea");
+      area.innerHTML = "";
+      for (let i = 0; i < cluesData.length; i++) {
+        if (cluesRevealed[i]) {
+          area.innerHTML += `
+            <div class="revealed">
+              <span class="clue-label">${cluesData[i].label}</span>
+              ${cluesData[i].clue}
+            </div>
+          `;
+        } else {
+          area.innerHTML += `
+            <div class="hiddenclue">
+              <span class="clue-label">${cluesData[i].label}</span>
+              Ledetråden er endnu skjult.<br>Find kodeordet for at låse op.
+            </div>
+          `;
+        }
+      }
+    }
+    function unlockClue() {
+      const inp = document.getElementById("clueInput");
+      const code = inp.value.trim().toLowerCase();
+      const msg = document.getElementById("clueSuccess");
+      let found = false;
+      if (code === "allez") {
+        cluesRevealed = [true, true, true, true];
+        found = true;
+      } else {
+        for (let i = 0; i < cluesData.length; i++) {
+          if (code === cluesData[i].code && !cluesRevealed[i]) {
+            cluesRevealed[i] = true;
+            found = true;
+          }
+        }
+      }
+      inp.value = "";
+      renderClues();
+      if (found) {
+        msg.textContent = "Ledetråd låst op!";
+      } else {
+        msg.textContent = "Ingen ledetråd fundet med den kode.";
+      }
+      setTimeout(() => { msg.textContent = ""; }, 1800);
+    }
+    renderClues();
+
+    // --- KRYPTEX LOGIK ---
     const solution = "ERINDRING";
     const wordLength = solution.length;
     const maxAttempts = 3;
@@ -312,7 +447,6 @@ Glem det ikke.
     let attempts = [];
     let locked = false;
 
-    // --- Build rings ---
     const ringContainer = document.getElementById("rings");
     for (let i = 0; i < wordLength; i++) {
       const ring = document.createElement("div");
@@ -348,7 +482,6 @@ Glem det ikke.
         else if (e.key === "ArrowDown") { turnRing(i, -1); e.preventDefault(); }
       });
     }
-
     function turnRing(idx, dir) {
       if (locked) return;
       ringState[idx] = (ringState[idx] + dir + bogstaver.length) % bogstaver.length;
@@ -361,7 +494,6 @@ Glem det ikke.
     function getGuess() {
       return ringState.map(idx => bogstaver[idx]).join('');
     }
-
     function checkCode() {
       if (locked) return;
       const valgt = getGuess();
@@ -377,7 +509,6 @@ Glem det ikke.
       const feedback = Array(wordLength).fill("gray");
       const solutionArr = solution.split('');
       const guessArr = valgt.split('');
-      // Første pas: grøn for rigtige
       let used = Array(wordLength).fill(false);
       for (let i = 0; i < wordLength; i++) {
         if (guessArr[i] === solutionArr[i]) {
@@ -385,7 +516,6 @@ Glem det ikke.
           used[i] = true;
         }
       }
-      // Andet pas: hvid for forkert placering men findes
       for (let i = 0; i < wordLength; i++) {
         if (feedback[i] === "gray") {
           for (let j = 0; j < wordLength; j++) {
@@ -397,10 +527,8 @@ Glem det ikke.
           }
         }
       }
-
       attempts.push({guess: valgt, feedback: feedback});
       renderAttempts();
-
       if (valgt === solution) {
         resultat.innerHTML = "🔓 Kryptex åbnet! En gammel pergamentrulle ruller ud...";
         scroll.style.display = 'block';
@@ -417,7 +545,6 @@ Glem det ikke.
         scroll.style.display = 'none';
       }
     }
-
     function renderAttempts() {
       const attemptsDiv = document.getElementById("attempts");
       attemptsDiv.innerHTML = "";
