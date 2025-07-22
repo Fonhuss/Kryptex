@@ -4,80 +4,43 @@
   <meta charset="UTF-8">
   <title>Kryptex</title>
   <style>
+    html, body {
+      height: 100%;
+      margin: 0;
+      padding: 0;
+    }
     body {
+      height: 100vh;
       min-height: 100vh;
+      width: 100vw;
+      min-width: 100vw;
       display: flex;
       flex-direction: column;
       align-items: center;
+      justify-content: center;
       font-family: 'Segoe UI', sans-serif;
-      margin: 0;
       background: radial-gradient(ellipse at 50% 40%, #4e3620 0%, #2b1a0d 100%);
       background-attachment: fixed;
+      box-sizing: border-box;
     }
-    h1 {
-      margin-top: 30px;
-      font-size: 2.4em;
-      color: #e2c17d;
-      text-shadow: 0 2px 10px #2b1a0d, 0 0 20px #0009;
+    .center-wrap {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 80vh;
+      width: 100vw;
     }
     .clues {
-      background: #4e3620e0;
-      border: 1.5px solid #bba753;
-      border-radius: 10px;
-      padding: 18px 28px 12px 28px;
-      margin-bottom: 10px;
-      margin-top: 12px;
       width: 420px;
       max-width: 99vw;
-      box-shadow: 0 2px 10px #bba75344;
-      color: #e2c17d;
-      font-family: 'IM Fell English', serif;
-      text-shadow: 0 1px 8px #2b1a0d, 0 0 1px #000a;
-    }
-    .clues h2 {
-      font-size: 1.2em;
-      margin-top: 0;
-      margin-bottom: 10px;
-      font-family: 'Segoe UI', sans-serif;
-      color: #e2c17d;
-      letter-spacing: 1px;
-      text-shadow: 0 1px 8px #2b1a0d, 0 0 1px #000a;
-    }
-    .revealed {
-      margin-bottom: 13px;
-      line-height: 1.4;
-      background: #1b1208d0;
-      padding: 12px 16px;
-      border-radius: 7px;
-      border: 1.5px solid #bba753;
-      box-shadow: 0 2px 10px #0006;
-      margin-top: 10px;
-      color: #ffe5a5;
-      font-family: 'IM Fell English', serif;
-    }
-    .hiddenclue {
-      margin-bottom: 13px;
-      line-height: 1.4;
-      background: #2b1a0d;
-      padding: 12px 16px;
-      border-radius: 7px;
-      border: 1.5px solid #555;
-      box-shadow: 0 2px 10px #0003;
-      margin-top: 10px;
-      color: #888;
-      font-style: italic;
-      text-align: center;
-      font-family: 'IM Fell English', serif;
-    }
-    .clue-label {
-      font-size: 1.14em;
-      color: #e2c17d;
-      font-family: 'Segoe UI', sans-serif;
-      font-weight: bold;
-      display: block;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-bottom: 18px;
     }
     .clue-input-row {
-      margin: 14px 0 0 0;
+      margin: 0 0 16px 0;
       display: flex;
       gap: 10px;
       justify-content: center;
@@ -115,10 +78,53 @@
       font-size: 1em;
       margin-top: 7px;
       text-align: center;
+      min-height: 1.2em;
+    }
+    .revealed {
+      margin-bottom: 13px;
+      line-height: 1.4;
+      background: #1b1208d0;
+      padding: 12px 16px;
+      border-radius: 7px;
+      border: 1.5px solid #bba753;
+      box-shadow: 0 2px 10px #0006;
+      color: #ffe5a5;
+      font-family: 'IM Fell English', serif;
+      width: 100%;
+      margin-top: 10px;
+    }
+    .clue-label {
+      font-size: 1.14em;
+      color: #e2c17d;
+      font-family: 'Segoe UI', sans-serif;
+      font-weight: bold;
+      display: block;
+      margin-bottom: 3px;
+    }
+    #cluesArea {
+      width: 100%;
+      max-width: 420px;
+      max-height: 230px; /* Sæt højden efter behov */
+      overflow-y: auto;
+      margin-top: 8px;
+      margin-bottom: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 7px;
+      scrollbar-color: #bba753 #1b1208;
+      scrollbar-width: thin;
+    }
+    #cluesArea::-webkit-scrollbar {
+      width: 8px;
+    }
+    #cluesArea::-webkit-scrollbar-thumb {
+      background: #bba753;
+      border-radius: 4px;
     }
     .kryptex-outer {
       display: flex;
       align-items: center;
+      justify-content: center;
       margin: 38px 0 17px 0;
       background: none;
     }
@@ -309,25 +315,24 @@
   </style>
 </head>
 <body>
-  <h1>Kryptex</h1>
-  <div class="clues">
-    <h2>Find ledetrådene – Indtast kodeord</h2>
-    <div id="cluesArea"></div>
-    <div class="clue-input-row">
-      <input class="clue-inp" id="clueInput" type="text" placeholder="Indtast kodeord..." autocomplete="off" />
-      <button class="clue-btn" onclick="unlockClue()">Lås op</button>
+  <div class="center-wrap">
+    <div class="clues">
+      <div class="clue-input-row">
+        <input class="clue-inp" id="clueInput" type="text" placeholder="Indtast kodeord..." autocomplete="off" />
+        <button class="clue-btn" onclick="unlockClue()">Lås op</button>
+      </div>
+      <div id="clueSuccess" class="clue-success"></div>
+      <div id="cluesArea"></div>
     </div>
-    <div id="clueSuccess" class="clue-success"></div>
-  </div>
-  <div class="kryptex-outer">
-    <span class="kryptex-endcap">◀</span>
-    <div class="kryptex-rings" id="rings"></div>
-    <span class="kryptex-endcap right">▶</span>
-  </div>
-  <button class="open-btn" id="openBtn" onclick="checkCode()" autofocus>Åbn Kryptex</button>
-  <div id="resultat"></div>
-  <div class="attempts" id="attempts"></div>
-  <div class="secret-scroll" id="scroll">
+    <div class="kryptex-outer">
+      <span class="kryptex-endcap">◀</span>
+      <div class="kryptex-rings" id="rings"></div>
+      <span class="kryptex-endcap right">▶</span>
+    </div>
+    <button class="open-btn" id="openBtn" onclick="checkCode()" autofocus>Åbn Kryptex</button>
+    <div id="resultat"></div>
+    <div class="attempts" id="attempts"></div>
+    <div class="secret-scroll" id="scroll">
 <b>Til Calius Vendren</b>
 
 Vi sejlede i stilhed – ikke for at undgå stormen, men for at finde det, vi havde glemt.
@@ -349,14 +354,15 @@ Hun ser dig.
 Glem det ikke.
 
 – M
-  </div>
-  <div class="broken-msg" id="brokenMsg" style="display:none;">
-    Kryptexen knækker med en metallisk lyd.<br>
-    Ingen vej tilbage – hemmeligheden går tabt i mørket.<br>
-    <span style="font-size:1.2em;">🗝️</span>
+    </div>
+    <div class="broken-msg" id="brokenMsg" style="display:none;">
+      Kryptexen knækker med en metallisk lyd.<br>
+      Ingen vej tilbage – hemmeligheden går tabt i mørket.<br>
+      <span style="font-size:1.2em;">🗝️</span>
+    </div>
   </div>
   <script>
-    // SVÆRE KODER TIL LEDETRÅDE
+    // LEDETRÅDE MED KODER
     const cluesData = [
       {
         code: "nautica",
@@ -388,7 +394,6 @@ Glem det ikke.
         Det var løftet vi glemte.”</i>`
       }
     ];
-
     let cluesRevealed = [false, false, false, false];
     function renderClues() {
       const area = document.getElementById("cluesArea");
@@ -399,13 +404,6 @@ Glem det ikke.
             <div class="revealed">
               <span class="clue-label">${cluesData[i].label}</span>
               ${cluesData[i].clue}
-            </div>
-          `;
-        } else {
-          area.innerHTML += `
-            <div class="hiddenclue">
-              <span class="clue-label">${cluesData[i].label}</span>
-              Ledetråden er endnu skjult.<br>Find kodeordet for at låse op.
             </div>
           `;
         }
