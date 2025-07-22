@@ -11,12 +11,8 @@
       align-items: center;
       font-family: 'Segoe UI', sans-serif;
       margin: 0;
-      /* NY D&D AGTIG BAGGRUND */
       background: radial-gradient(ellipse at 50% 40%, #4e3620 0%, #2b1a0d 100%);
       background-attachment: fixed;
-      /* Brug evt. et let tekstur-billede: */
-      /* background-image: url('https://www.transparenttextures.com/patterns/wood-pattern.png'), radial-gradient(ellipse at 50% 40%, #4e3620 0%, #2b1a0d 100%); */
-      /* background-blend-mode: multiply; */
     }
     h1 {
       margin-top: 30px;
@@ -24,10 +20,41 @@
       color: #e2c17d;
       text-shadow: 0 2px 10px #2b1a0d, 0 0 20px #0009;
     }
+    .clues {
+      background: #4e3620e0;
+      border: 1.5px solid #bba753;
+      border-radius: 10px;
+      padding: 18px 28px 12px 28px;
+      margin-bottom: 10px;
+      margin-top: 12px;
+      width: 420px;
+      max-width: 99vw;
+      box-shadow: 0 2px 10px #bba75344;
+      color: #e2c17d;
+      font-family: 'IM Fell English', serif;
+      text-shadow: 0 1px 8px #2b1a0d, 0 0 1px #000a;
+    }
+    .clues h2 {
+      font-size: 1.2em;
+      margin-top: 0;
+      margin-bottom: 10px;
+      font-family: 'Segoe UI', sans-serif;
+      color: #e2c17d;
+      letter-spacing: 1px;
+      text-shadow: 0 1px 8px #2b1a0d, 0 0 1px #000a;
+    }
+    .clues ul {
+      padding-left: 15px;
+      margin: 0;
+    }
+    .clues li {
+      margin-bottom: 13px;
+      line-height: 1.4;
+    }
     .kryptex-outer {
       display: flex;
       align-items: center;
-      margin: 50px 0 24px 0;
+      margin: 38px 0 17px 0;
       background: none;
     }
     .kryptex-endcap {
@@ -122,7 +149,12 @@
       transition: background 0.2s;
       border: 2px solid #bba753;
     }
-    .open-btn:hover {
+    .open-btn:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+      filter: grayscale(1);
+    }
+    .open-btn:hover:not(:disabled) {
       background: linear-gradient(90deg, #fff6c6 0%, #e8d387 100%);
     }
     #resultat {
@@ -133,9 +165,52 @@
       font-family: 'Segoe UI', monospace;
       text-shadow: 0 1px 10px #2b1a0d, 0 0 5px #0007;
     }
+    .attempts {
+      margin: 16px 0 0 0;
+      min-height: 90px;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .attempt-row {
+      display: flex;
+      gap: 5px;
+      margin-bottom: 6px;
+    }
+    .attempt-letter {
+      width: 44px;
+      height: 48px;
+      border-radius: 6px;
+      font-size: 2em;
+      font-family: 'Courier New', Courier, monospace;
+      font-weight: bold;
+      text-align: center;
+      line-height: 48px;
+      background: #2b1a0d;
+      color: #e2c17d;
+      border: 1.5px solid #8c7b3f;
+      box-shadow: 0 2px 8px #000c;
+      transition: background 0.2s, color 0.2s;
+    }
+    .attempt-letter.green {
+      background: #3ca366;
+      color: #fff;
+      border-color: #1e6941;
+    }
+    .attempt-letter.yellow {
+      background: #d9d9d9;
+      color: #2b1a0d;
+      border-color: #bba753;
+    }
+    .attempt-letter.gray {
+      background: #393939;
+      color: #c8c8c8;
+      border-color: #222;
+    }
     .secret-scroll {
       margin: 30px auto 0;
-      width: 350px;
+      width: 390px;
       max-width: 95vw;
       background: #f0e5c0;
       border: 2px solid #bba753;
@@ -149,39 +224,22 @@
       animation: scroll-in 1s;
       white-space: pre-line;
     }
+    .broken-msg {
+      color: #e46b42;
+      text-align: center;
+      font-size: 1.2em;
+      margin-top: 30px;
+      background: #2b1a0d;
+      border: 2px solid #e46b42;
+      border-radius: 8px;
+      padding: 16px 24px;
+      box-shadow: 0 3px 20px #000b;
+      font-family: 'IM Fell English', serif;
+      max-width: 420px;
+    }
     @keyframes scroll-in {
       from { opacity: 0; transform: scaleY(0.3) translateY(50px);}
       to { opacity: 1; transform: scaleY(1) translateY(0);}
-    }
-    .clues {
-      background: #4e3620e0;
-      border: 1.5px solid #bba753;
-      border-radius: 10px;
-      padding: 18px 28px 12px 28px;
-      margin-bottom: 10px;
-      margin-top: 12px;
-      width: 380px;
-      max-width: 96vw;
-      box-shadow: 0 2px 10px #bba75344;
-      color: #e2c17d;
-      font-family: 'IM Fell English', serif;
-      text-shadow: 0 1px 8px #2b1a0d, 0 0 1px #000a;
-    }
-    .clues h2 {
-      font-size: 1.2em;
-      margin-top: 0;
-      margin-bottom: 10px;
-      font-family: 'Segoe UI', sans-serif;
-      color: #e2c17d;
-      letter-spacing: 1px;
-      text-shadow: 0 1px 8px #2b1a0d, 0 0 1px #000a;
-    }
-    .clues ul {
-      padding-left: 15px;
-      margin: 0;
-    }
-    .clues li {
-      margin-bottom: 12px;
     }
   </style>
 </head>
@@ -190,14 +248,22 @@
   <div class="clues">
     <h2>Ledetråde</h2>
     <ul>
-      <li><b>1.</b> En falmet vægskrift, halvt skjult bag en reol, hvor der står:<br>
-      <i>"Det største tab... er det, man ikke længere husker."</i></li>
-      <li><b>2.</b> En dagbog fra Calius med en side revet ud, men ét ord står på næste side:<br>
-      <i>"Jeg har glemt, hvem jeg var før dette..."</i></li>
-      <li><b>3.</b> En statue i hjørnet forestillende en præst uden ansigt. På soklen:<br>
-      <i>"Navnet viskes væk, men virkningen forbliver."</i></li>
-      <li><b>4.</b> En note gemt i en skriftrulleholder:<br>
-      <i>"Vi kalder det Renselse. Men det er kun, hvad vi har glemt, der gør plads til det nye."</i></li>
+      <li>🗺️ <b>Kaptajnens Kahyt:</b>  
+        <i>“Hun hviskede mit navn, men jeg glemte det, så snart jeg så hendes øjne. Alt hvad der blev tilbage… var fornemmelsen af noget jeg burde have husket.”</i>
+      </li>
+      <li>🐚 <b>Et spejl i besætningskvarteret:</b>  
+        <i>“De ser dig ikke. Men dine bånd følger med i spejlet.”</i>
+      </li>
+      <li>📦 <b>En glemt kiste i lastrummet:</b>  
+        <i>“Skyggens gave: at du husker, det andre ønsker glemt.”</i>
+      </li>
+      <li>📜 <b>Sømands sang på sejlklæde:</b>  
+        <i>“Hvad havet har glemt, gemmer hun i mørket.<br>
+        Hvad vi har svigtet, venter i stilheden.<br>
+        Et navn? Nej. Et bånd.<br>
+        Et minde? Måske. En…”<br>
+        <b>(– Resten af strofen er flået væk, men der står kun ét ord i hjørnet: “ERINDR…”)</b></i>
+      </li>
     </ul>
   </div>
   <div class="kryptex-outer">
@@ -205,31 +271,46 @@
     <div class="kryptex-rings" id="rings"></div>
     <span class="kryptex-endcap right">▶</span>
   </div>
-  <button class="open-btn" onclick="checkCode()">Åbn Kryptex</button>
+  <button class="open-btn" id="openBtn" onclick="checkCode()" autofocus>Åbn Kryptex</button>
   <div id="resultat"></div>
+  <div class="attempts" id="attempts"></div>
   <div class="secret-scroll" id="scroll">
 <b>Til Calius Vendren</b>
 
-Den første ild døde i mørket.
-Vores ritual blev brudt – forrådt af én blandt os.
-Kvinden med ravnene vendte sine øjne mod os, og alt brød sammen.
-Men hendes tid er forbi.
-Jeg forsøger igen.
+Vi sejlede i stilhed – ikke for at undgå stormen, men for at finde det, vi havde glemt.
 
-Bror Arven forstår formålet.
-Han venter i Thundralis, i skyggen af tårnet hvor lyset aldrig rækker.
+Jeg troede ritualet døde med hende...
+Men hun vogter stadig. I spejle, i skygger, i hvisken på havet.
 
-Husk hvem vi er – selv hvis verden har glemt os.
+En af os har brudt løftet.
+En anden har måske husket det.
+
+Maskerne er blevet fundet.
+Blodet blev givet.
+Og vandet – det bevægede sig.
+
+Hvis du læser dette, så er du tæt på.
+Tættere end du tror.
+
+Hun ser dig.
+Glem det ikke.
 
 – M
   </div>
-
+  <div class="broken-msg" id="brokenMsg" style="display:none;">
+    Kryptexen knækker med en metallisk lyd.<br>
+    Ingen vej tilbage – hemmeligheden går tabt i mørket.<br>
+    <span style="font-size:1.2em;">🗝️</span>
+  </div>
   <script>
     // --- SETTINGS ---
-    const wordLength = 5; // Antal bogstaver i kodeordet
-    const løsning = "GLEMT"; // Kodeordet
+    const solution = "ERINDRING";
+    const wordLength = solution.length;
+    const maxAttempts = 3;
     const bogstaver = "ABCDEFGHIJKLMNOPQRSTUVWXYZÆØÅ";
     let ringState = Array(wordLength).fill(0);
+    let attempts = [];
+    let locked = false;
 
     // --- Build rings ---
     const ringContainer = document.getElementById("rings");
@@ -269,6 +350,7 @@ Husk hvem vi er – selv hvis verden har glemt os.
     }
 
     function turnRing(idx, dir) {
+      if (locked) return;
       ringState[idx] = (ringState[idx] + dir + bogstaver.length) % bogstaver.length;
       updateRing(idx);
     }
@@ -276,16 +358,79 @@ Husk hvem vi er – selv hvis verden har glemt os.
       const ring = ringContainer.children[idx];
       ring.querySelector('.kryptex-letter').innerText = bogstaver[ringState[idx]];
     }
+    function getGuess() {
+      return ringState.map(idx => bogstaver[idx]).join('');
+    }
+
     function checkCode() {
-      const valgt = ringState.map(idx => bogstaver[idx]).join('');
+      if (locked) return;
+      const valgt = getGuess();
       const resultat = document.getElementById("resultat");
       const scroll = document.getElementById("scroll");
-      if (valgt === løsning) {
+      const attemptsDiv = document.getElementById("attempts");
+      const brokenMsg = document.getElementById("brokenMsg");
+      const openBtn = document.getElementById("openBtn");
+
+      if (valgt.length !== wordLength) return;
+
+      // Feedback-farver
+      const feedback = Array(wordLength).fill("gray");
+      const solutionArr = solution.split('');
+      const guessArr = valgt.split('');
+      // Første pas: grøn for rigtige
+      let used = Array(wordLength).fill(false);
+      for (let i = 0; i < wordLength; i++) {
+        if (guessArr[i] === solutionArr[i]) {
+          feedback[i] = "green";
+          used[i] = true;
+        }
+      }
+      // Andet pas: hvid for forkert placering men findes
+      for (let i = 0; i < wordLength; i++) {
+        if (feedback[i] === "gray") {
+          for (let j = 0; j < wordLength; j++) {
+            if (!used[j] && guessArr[i] === solutionArr[j]) {
+              feedback[i] = "yellow";
+              used[j] = true;
+              break;
+            }
+          }
+        }
+      }
+
+      attempts.push({guess: valgt, feedback: feedback});
+      renderAttempts();
+
+      if (valgt === solution) {
         resultat.innerHTML = "🔓 Kryptex åbnet! En gammel pergamentrulle ruller ud...";
         scroll.style.display = 'block';
-      } else {
-        resultat.innerHTML = "❌ Forkert kode. Prøv igen!";
+        locked = true;
+        openBtn.disabled = true;
+      } else if (attempts.length >= maxAttempts) {
+        resultat.innerHTML = "";
         scroll.style.display = 'none';
+        brokenMsg.style.display = 'block';
+        locked = true;
+        openBtn.disabled = true;
+      } else {
+        resultat.innerHTML = "❌ Forkert kode. Prøv igen! ("+(maxAttempts-attempts.length)+" forsøg tilbage)";
+        scroll.style.display = 'none';
+      }
+    }
+
+    function renderAttempts() {
+      const attemptsDiv = document.getElementById("attempts");
+      attemptsDiv.innerHTML = "";
+      for (let att of attempts) {
+        const row = document.createElement("div");
+        row.className = "attempt-row";
+        for (let i = 0; i < att.guess.length; i++) {
+          const letterDiv = document.createElement("div");
+          letterDiv.className = "attempt-letter " + att.feedback[i];
+          letterDiv.innerText = att.guess[i];
+          row.appendChild(letterDiv);
+        }
+        attemptsDiv.appendChild(row);
       }
     }
   </script>
