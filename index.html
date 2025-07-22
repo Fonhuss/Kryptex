@@ -104,7 +104,7 @@
     #cluesArea {
       width: 100%;
       max-width: 420px;
-      max-height: 230px; /* Sæt højden efter behov */
+      max-height: 230px;
       overflow-y: auto;
       margin-top: 8px;
       margin-bottom: 0;
@@ -161,16 +161,41 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      margin: 0 2px;
       background: linear-gradient(135deg, #f7e9b5 20%, #bba753 80%);
       border: 2px solid #8c7b3f;
       border-radius: 8px;
       box-shadow: 0 2px 12px #6d5a2155;
-      width: 44px;
+      width: 54px;
       height: 110px;
-      padding: 2px 0;
+      margin: 0 2px;
       position: relative;
       z-index: 1;
+    }
+    .arrow-btn {
+      background: linear-gradient(90deg, #bba753 0%, #fdf6c1 100%);
+      border: 1px solid #8c7b3f;
+      border-radius: 5px;
+      color: #4c3e1f;
+      font-size: 1.15em;
+      font-weight: bold;
+      width: 38px;
+      height: 23px;
+      cursor: pointer;
+      margin: 4px 0 0 0;
+      box-shadow: 0 1px 2px #2223;
+      transition: background 0.1s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 5;
+      position: relative;
+      padding: 0;
+    }
+    .arrow-btn:last-child {
+      margin: 4px 0 4px 0;
+    }
+    .arrow-btn:active {
+      background: #f7e9b5;
     }
     .kryptex-letter {
       font-size: 2.1em;
@@ -178,8 +203,9 @@
       color: #4c3e1f;
       background: #fdf6c1;
       border-radius: 4px;
-      margin: 14px 0;
+      margin: 7px 0;
       width: 90%;
+      height: 42px;
       text-align: center;
       box-shadow: 0 2px 6px #fff2, 0 0 0 1px #bba753;
       border: 1px solid #8c7b3f66;
@@ -187,23 +213,37 @@
       letter-spacing: 2px;
       user-select: none;
       transition: background 0.15s, color 0.2s;
-    }
-    .arrow-btn {
-      background: linear-gradient(90deg, #bba753 0%, #fdf6c1 100%);
-      border: 1px solid #8c7b3f;
-      border-radius: 6px;
-      color: #4c3e1f;
-      font-size: 1.1em;
-      font-weight: bold;
-      width: 28px;
-      height: 24px;
+      position: relative;
+      z-index: 2;
       cursor: pointer;
-      margin: 2px 0;
-      box-shadow: 0 1px 2px #2223;
-      transition: background 0.1s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
-    .arrow-btn:active {
-      background: #f7e9b5;
+    .kryptex-letter-input {
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background: transparent;
+      color: transparent;
+      border: none;
+      outline: none;
+      font-size: 2.1em;
+      font-family: 'Courier New', Courier, monospace;
+      text-align: center;
+      font-weight: bold;
+      z-index: 3;
+      cursor: pointer;
+      caret-color: #4c3e1f;
+    }
+    .kryptex-letter-input:focus {
+      background: #fff8d7b0;
+      color: #4c3e1f;
+      border-radius: 4px;
+      outline: 2px solid #bba753;
+      z-index: 4;
     }
     .open-btn {
       padding: 14px 45px;
@@ -446,6 +486,8 @@ Glem det ikke.
     let locked = false;
 
     const ringContainer = document.getElementById("rings");
+    let ringInputs = [];
+
     for (let i = 0; i < wordLength; i++) {
       const ring = document.createElement("div");
       ring.className = "kryptex-ring";
@@ -457,9 +499,77 @@ Glem det ikke.
       upBtn.innerHTML = "▲";
       upBtn.onclick = () => turnRing(i, 1);
 
+      // BOGSTAV VISNINGEN
       const letter = document.createElement("div");
       letter.className = "kryptex-letter";
       letter.innerText = bogstaver[0];
+      letter.style.position = "relative";
+      letter.style.zIndex = "2";
+
+      // INPUT
+      const inp = document.createElement("input");
+      inp.className = "kryptex-letter-input";
+      inp.type = "text";
+      inp.maxLength = 1;
+      inp.autocomplete = "off";
+      inp.spellcheck = false;
+      inp.inputMode = "text";
+      inp.tabIndex = 0;
+      inp.setAttribute("aria-label", "Indtast bogstav");
+
+      ringInputs.push(inp);
+
+      // FOKUS VED KLIK
+      letter.addEventListener("click", () => {
+        inp.focus();
+        inp.select();
+      });
+
+      inp.addEventListener("input", e => {
+        if (locked) { inp.value = ""; return; }
+        let ch = inp.value.toUpperCase();
+        let idx = bogstaver.indexOf(ch);
+        if (idx !== -1) {
+          ringState[i] = idx;
+          updateRing(i);
+          // AUTOFOKUS til næste felt hvis ikke sidste
+          if (i < ringInputs.length - 1) {
+            setTimeout(() => {
+              ringInputs[i + 1].focus();
+              ringInputs[i + 1].select();
+            }, 0);
+          }
+        }
+        inp.value = "";
+      });
+
+      inp.addEventListener('keydown', e => {
+        if (locked) return;
+        if (e.key === "ArrowUp") {
+          turnRing(i, 1);
+          e.preventDefault();
+        } else if (e.key === "ArrowDown") {
+          turnRing(i, -1);
+          e.preventDefault();
+        } else if (e.key === "ArrowRight" || (e.key === "Tab" && !e.shiftKey)) {
+          if (i < wordLength - 1) {
+            ringInputs[i + 1].focus();
+            ringInputs[i + 1].select();
+            e.preventDefault();
+          }
+        } else if (e.key === "ArrowLeft" || (e.key === "Tab" && e.shiftKey)) {
+          if (i > 0) {
+            ringInputs[i - 1].focus();
+            ringInputs[i - 1].select();
+            e.preventDefault();
+          }
+        }
+      });
+
+      ring.addEventListener("focus", () => {
+        inp.focus();
+        inp.select();
+      });
 
       const downBtn = document.createElement("button");
       downBtn.className = "arrow-btn";
@@ -468,18 +578,12 @@ Glem det ikke.
 
       ring.appendChild(upBtn);
       ring.appendChild(letter);
+      ring.appendChild(inp);
       ring.appendChild(downBtn);
 
       ringContainer.appendChild(ring);
-
-      // Keyboard support
-      ring.addEventListener('focus', () => ring.classList.add("active"));
-      ring.addEventListener('blur', () => ring.classList.remove("active"));
-      ring.addEventListener('keydown', e => {
-        if (e.key === "ArrowUp") { turnRing(i, 1); e.preventDefault(); }
-        else if (e.key === "ArrowDown") { turnRing(i, -1); e.preventDefault(); }
-      });
     }
+
     function turnRing(idx, dir) {
       if (locked) return;
       ringState[idx] = (ringState[idx] + dir + bogstaver.length) % bogstaver.length;
@@ -487,7 +591,8 @@ Glem det ikke.
     }
     function updateRing(idx) {
       const ring = ringContainer.children[idx];
-      ring.querySelector('.kryptex-letter').innerText = bogstaver[ringState[idx]];
+      const ch = bogstaver[ringState[idx]];
+      ring.querySelector('.kryptex-letter').innerText = ch;
     }
     function getGuess() {
       return ringState.map(idx => bogstaver[idx]).join('');
