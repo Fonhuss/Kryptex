@@ -21,9 +21,9 @@
     }
     .wrap{width:min(1100px,95vw);padding:32px 18px 42px;display:flex;flex-direction:column;align-items:center;gap:22px;}
     .brand{text-align:center;user-select:none;}
-    .brand img{max-width:220px;margin-bottom:12px;}
-    .brand h1{margin:0;font-family:'IM Fell English', serif;font-size:clamp(28px,5vw,48px);letter-spacing:1px;color:#ffe5a5;text-shadow:0 2px 18px #000a;}
-    .brand p{margin:6px 0 0 0;font-size:clamp(14px,2.2vw,18px);color:#e2c17d;opacity:.95;}
+    .brand img{max-width:300px;margin-bottom:18px;} /* større logo */
+    .brand h1{margin:0;font-family:'IM Fell English', serif;font-size:clamp(32px,6vw,52px);letter-spacing:1px;color:#ffe5a5;text-shadow:0 2px 18px #000a;}
+    .brand p{margin:8px 0 0 0;font-size:clamp(15px,2.2vw,19px);color:#e2c17d;opacity:.95;}
     .panel{width:100%;background:#1b1208d0;border:1.5px solid var(--gold);border-radius:14px;box-shadow:0 6px 28px #0009,0 0 0 6px #ad995422;padding:18px;}
     .grid{display:grid;grid-template-columns:repeat(auto-fit, minmax(260px,1fr));gap:16px;}
     .card{
@@ -45,7 +45,8 @@
     }
     .btn:active{transform:translateY(1px)}
     .btn.secondary{background:#fdf6c1;border-color:#8c7b3f}
-    footer{margin-top:8px;font-size:.9rem;color:#c9b37b;opacity:.9;text-align:center;}
+    footer{margin-top:18px;text-align:center;}
+    footer img{max-width:280px;opacity:.95;} /* logo i bunden */
     a.btn:focus-visible, .btn:focus-visible{outline:3px solid #fff7;outline-offset:2px;}
     .card:has(a.btn:hover){filter:saturate(1.03)}
   </style>
@@ -53,7 +54,7 @@
 <body>
   <div class="wrap">
     <header class="brand">
-      <img src="./logo.png" alt="Empty Well Studios logo">
+      <img src="logo.png" alt="Empty Well logo">
       <h1>Empty Well Archives</h1>
       <p>Små give-outs og miniopgaver til dine eventyrere</p>
     </header>
@@ -88,7 +89,9 @@
       </div>
     </section>
 
-    <footer>© Empty Well Studios</footer>
+    <footer>
+      <img src="logo navn.png" alt="Empty Well Studios">
+    </footer>
   </div>
 </body>
 </html>
