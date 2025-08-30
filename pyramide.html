@@ -4,115 +4,121 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Empty Well Archives – Nøgletrekanten</title>
+<link href="https://fonts.googleapis.com/css2?family=IM+Fell+English:ital,wght@0,400;1,400&display=swap" rel="stylesheet">
 <style>
+  :root{
+    --bronze:#bba753; --bronze-dark:#8c7b3f; --parch:#e7d7a8;
+    --ink:#2b1a0d; --bg1:#4e3620; --bg2:#2b1a0d;
+    --stone1:#7b5e4a; --stone2:#5f4737; --aqua:#1e8c99;
+  }
   html,body{height:100%;margin:0}
   body{
     min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;
     font-family:'Segoe UI',sans-serif;box-sizing:border-box;
-    background:radial-gradient(ellipse at 50% 40%,#4e3620 0%,#2b1a0d 100%);
+    background:radial-gradient(ellipse at 50% 40%,var(--bg1) 0%,var(--bg2) 100%);
     background-attachment:fixed;color:#e2c17d
   }
 
   .wrap{width:100%;max-width:1260px;padding:24px 20px 28px;display:flex;flex-direction:column;align-items:center}
-  h1{margin:10px 0 16px;font-size:2rem;letter-spacing:.5px;color:#f5e4a6;text-shadow:0 2px 10px #000}
+  h1{margin:10px 0 16px;font-size:2rem;letter-spacing:.5px;color:#f5e4a6;text-shadow:0 2px 10px #000;font-family:'IM Fell English',serif}
 
   /* Tilbage-knap */
   .back-btn{
-    align-self:flex-start;
-    margin-bottom:12px;
-    padding:8px 14px;
-    border-radius:8px;
-    border:2px solid #bba753;
-    background:linear-gradient(90deg,#fff6c6 0%,#e8d387 100%);
-    font-weight:700;
-    color:#4e3620;
-    text-decoration:none;
-    box-shadow:0 2px 8px #0005;
+    align-self:flex-start;margin-bottom:12px;padding:8px 14px;border-radius:8px;border:2px solid var(--bronze);
+    background:linear-gradient(90deg,#fff6c6 0%,#e8d387 100%);font-weight:700;color:#4e3620;text-decoration:none;
+    box-shadow:0 2px 8px #0005
   }
   .back-btn:hover{filter:brightness(1.05)}
 
   .walls{
-    width:100%;
-    display:grid;
-    gap:24px;
-    grid-template-columns:1fr 1fr;
+    width:100%;display:grid;gap:24px;grid-template-columns:1fr 1fr;align-items:start
   }
   @media (max-width:950px){ .walls{grid-template-columns:1fr} }
 
+  /* Panel – bronze/obsidian ramme */
   .panel{
-    width:100%;
-    background:#1b1208d0;
-    border:1.5px solid #bba753;
-    border-radius:14px;
-    box-shadow:0 4px 22px #000a;
-    padding:20px;
+    width:100%;background:#0f0b05e6;border:1.5px solid var(--bronze);border-radius:14px;
+    box-shadow:0 4px 22px #000a, inset 0 0 0 1px #000;
+    padding:20px;position:relative
   }
-  .panel h2{margin:0 0 14px 0;font-size:1.15rem;color:#e8d387;font-weight:700}
-
-  .board{
-    display:flex;flex-wrap:wrap;gap:22px;justify-content:center
+  .panel::before{
+    content:"";position:absolute;inset:6px;border-radius:10px;border:1px solid #2e2416;pointer-events:none
   }
+  .panel h2{margin:0 0 14px;font-size:1.15rem;color:#e8d387;font-weight:700;font-family:'IM Fell English',serif;letter-spacing:.3px}
 
+  /* Centrér kortene i væggen */
+  .board{display:flex;flex-wrap:wrap;gap:22px;justify-content:center}
+
+  /* Kort – pergament + bronze */
   .tri-card{
-    background:#0f0b05c0;
-    border:1.5px solid #8c7b3f;
-    border-radius:14px;
-    box-shadow:0 3px 14px #000b;
-    padding:16px;
-    width:240px;
-    display:flex;flex-direction:column;align-items:center
+    background:linear-gradient(135deg,#1d140c 20%,#24170c 100%);
+    border:1.5px solid var(--bronze-dark);
+    border-radius:14px;box-shadow:0 3px 14px #000b, inset 0 0 0 1px #000;
+    padding:16px;width:250px;display:flex;flex-direction:column;align-items:center;position:relative;
+    overflow:hidden
   }
-  .tri-title{font-weight:800;margin:0 0 8px 0;color:#e8d387}
+  .tri-card::after{
+    content:"";position:absolute;inset:0;background:
+      radial-gradient(160px 100px at 120% -10%, #fff3 0%, transparent 60%);
+    pointer-events:none
+  }
+  .tri-title{font-weight:800;margin:0 0 8px;color:#e8d387;font-family:'IM Fell English',serif;letter-spacing:.4px}
 
-  .tri{
-    width:210px;height:180px;position:relative;isolation:isolate
-  }
-  @media (max-width:600px){
-    .tri{width:160px;height:140px}
-    .tri-card{width:180px}
-    .corner{font-size:18px}
-    .center-num{font-size:22px}
-  }
+  /* Trekant – sten med cyan kant som “magisk inlay” */
+  .tri{width:220px;height:188px;position:relative;isolation:isolate}
+  @media (max-width:600px){ .tri{width:170px;height:145px} .tri-card{width:200px} .corner{font-size:18px} .center-num{font-size:22px} }
   svg{width:100%;height:100%}
+
   .center-num{
     position:absolute;left:50%;top:53%;transform:translate(-50%,-50%);
-    font-size:28px;font-weight:900;color:#ffdf91;text-shadow:0 1px 6px #000
+    font-size:28px;font-weight:900;color:#ffe2a6;text-shadow:0 1px 6px #000, 0 0 10px #000;
   }
 
+  /* Hjørnetal – “indhugget” med svag glød */
   .corner{
-    position:absolute;font-size:20px;font-weight:900;color:#ffd36b;text-shadow:0 1px 5px #000
+    position:absolute;font-size:20px;font-weight:900;color:#ffd36b;text-shadow:0 1px 2px #000, 0 0 6px #0008;
+    font-family:'IM Fell English',serif;
   }
-  .corner.top{left:50%;top:10px;transform:translateX(-50%)}
-  .corner.left{left:14px;bottom:16px}
-  .corner.right{right:14px;bottom:16px}
+  .corner.top{left:50%;top:8px;transform:translateX(-50%)}
+  .corner.left{left:14px;bottom:14px}
+  .corner.right{right:14px;bottom:14px}
 
+  /* Nøglehuller – messingplader med nitter */
   .slot{
     position:absolute;display:flex;align-items:center;justify-content:center;
-    width:46px;height:46px;border-radius:10px;
-    border:2px dashed #d9bc6b;background:#2b1a0d;
-    color:#9b8650;font-weight:900;font-size:20px;
+    width:46px;height:46px;border-radius:10px;background:linear-gradient(145deg,#f2e4b2 0%,#c9ad63 60%,#9f8444 100%);
+    color:#4e3b17;font-weight:900;font-size:20px;border:2px solid #7e662e;box-shadow:inset 0 1px 4px #fff6, 0 2px 6px #0008;
   }
-  .slot[data-part="top"]{left:50%;top:4px;transform:translateX(-50%)}
-  .slot[data-part="left"]{left:12px;bottom:14px}
-  .slot[data-part="right"]{right:12px;bottom:14px}
+  .slot::before,.slot::after{
+    content:"";position:absolute;width:6px;height:6px;border-radius:50%;background:#6e5827;border:1px solid #3e3116;box-shadow:inset 0 0 2px #0006
+  }
+  .slot::before{left:6px;top:6px}
+  .slot::after{right:6px;bottom:6px}
+  .slot[data-part="top"]{left:50%;top:2px;transform:translateX(-50%)}
+  .slot[data-part="left"]{left:10px;bottom:10px}
+  .slot[data-part="right"]{right:10px;bottom:10px}
   .slot[data-part="mid"]{left:50%;top:53%;transform:translate(-50%,-50%)}
-  .slot.filled{border-style:solid;background:#3b2a13;color:#f7e9b5}
+  .slot.filled{filter:saturate(.9) brightness(.9);background:linear-gradient(145deg,#d7c483 0%,#b99a4f 60%,#8f7435 100%)}
 
+  /* Sten-runebagrund (svag) – gives via svg <text> */
+  .runes{font-family:'IM Fell English',serif;fill:#000;opacity:.12;filter:blur(.3px)}
+
+  /* Nøgler på gulvet – messing-tags */
   .floor{
-    margin-top:20px;padding:16px;background:#1b1208;border:1.5px solid #bba753;border-radius:12px;
+    margin-top:20px;padding:16px;background:#14100b;border:1.5px solid var(--bronze);border-radius:12px;
     box-shadow:inset 0 2px 10px #000;max-width:1000px;width:100%
   }
   .pool{display:grid;grid-template-columns:repeat(auto-fit,minmax(80px,1fr));gap:10px}
   .token{
     user-select:none;cursor:grab;display:flex;align-items:center;justify-content:center;
     padding:8px 0;border-radius:10px;font-weight:900;font-size:18px;
-    color:#4e3620;background:linear-gradient(135deg,#f7e9b5 0%,#bba753 100%);
+    color:#3a2d12;background:linear-gradient(135deg,#f7e9b5 0%,#bba753 100%);
     border:2px solid #8c7b3f;box-shadow:0 2px 8px #0006;height:50px
   }
   .token.used{opacity:.45;cursor:not-allowed}
   .msg{margin:16px 0 6px;color:#f5e4a6;text-align:center}
-  .unlock{margin-top:16px;padding:14px 18px;background:#f0e5c0;border:2px solid #bba753;border-radius:12px;box-shadow:0 4px 20px #0006;color:#6d5a21;display:none}
-  .btn{margin-top:10px;padding:8px 14px;border-radius:8px;border:2px solid #bba753;background:linear-gradient(90deg,#fff6c6 0%,#e8d387 100%);font-weight:700;color:#6d5a21;cursor:pointer}
+  .unlock{margin-top:16px;padding:14px 18px;background:#f0e5c0;border:2px solid var(--bronze);border-radius:12px;box-shadow:0 4px 20px #0006;color:#6d5a21;display:none}
+  .btn{margin-top:10px;padding:8px 14px;border-radius:8px;border:2px solid var(--bronze);background:linear-gradient(90deg,#fff6c6 0%,#e8d387 100%);font-weight:700;color:#6d5a21;cursor:pointer}
 </style>
 </head>
 <body>
@@ -121,45 +127,123 @@
     <h1>Nøgletrekanten</h1>
 
     <div class="walls">
+      <!-- Væg I -->
       <section class="panel">
         <h2>Væg I</h2>
         <div class="board">
-          <div class="tri-card"><div class="tri-title">A</div><div class="tri">
-            <div class="corner top">2</div><div class="corner left">1</div><div class="corner right">3</div><div class="center-num">9</div>
-            <svg viewBox="0 0 100 90"><polygon points="50,5 5,85 95,85" fill="#ff5ea5" opacity=".8" stroke="#27aac7" stroke-width="6"/></svg>
-          </div></div>
-          <div class="tri-card"><div class="tri-title">B</div><div class="tri">
-            <div class="corner top">4</div><div class="corner left">2</div><div class="slot" data-part="right" data-id="B-right">🔑</div><div class="center-num">18</div>
-            <svg viewBox="0 0 100 90"><polygon points="50,5 5,85 95,85" fill="#ff5ea5" opacity=".8" stroke="#27aac7" stroke-width="6"/></svg>
-          </div></div>
-          <div class="tri-card"><div class="tri-title">C</div><div class="tri">
-            <div class="slot" data-part="top" data-id="C-top">🔑</div><div class="corner left">1</div><div class="corner right">2</div><div class="center-num">12</div>
-            <svg viewBox="0 0 100 90"><polygon points="50,5 5,85 95,85" fill="#ff5ea5" opacity=".8" stroke="#27aac7" stroke-width="6"/></svg>
-          </div></div>
+          <!-- A (facit) -->
+          <div class="tri-card"><div class="tri-title">A</div>
+            <div class="tri">
+              <div class="corner top">2</div><div class="corner left">1</div><div class="corner right">3</div><div class="center-num">9</div>
+              <svg viewBox="0 0 100 90" aria-hidden="true">
+                <defs>
+                  <linearGradient id="stoneA" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0%" stop-color="#8a6f5a"/><stop offset="100%" stop-color="#5e4536"/>
+                  </linearGradient>
+                </defs>
+                <!-- magisk cyan inlay -->
+                <polygon points="50,5 5,85 95,85" fill="none" stroke="#1ea6b5" stroke-width="8" opacity=".9"/>
+                <!-- stenfyld -->
+                <polygon points="50,14 13,82 87,82" fill="url(#stoneA)" stroke="#3a2a20" stroke-width="1.5"/>
+                <!-- runer -->
+                <text class="runes" x="35" y="65" font-size="10">ᚠᚢᚱ ᚦᚨᚾ ᚱᚢᚾ</text>
+              </svg>
+            </div>
+          </div>
+          <!-- B – mangler højre (3) -->
+          <div class="tri-card"><div class="tri-title">B</div>
+            <div class="tri">
+              <div class="corner top">4</div><div class="corner left">2</div><div class="slot" data-part="right" data-id="B-right">🔑</div><div class="center-num">18</div>
+              <svg viewBox="0 0 100 90">
+                <defs>
+                  <linearGradient id="stoneB" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0%" stop-color="#876951"/><stop offset="100%" stop-color="#584132"/>
+                  </linearGradient>
+                </defs>
+                <polygon points="50,5 5,85 95,85" fill="none" stroke="#1ea6b5" stroke-width="8" opacity=".9"/>
+                <polygon points="50,14 13,82 87,82" fill="url(#stoneB)" stroke="#3a2a20" stroke-width="1.5"/>
+                <text class="runes" x="28" y="60" font-size="9">ᚱᚨᚾᚷ ᚨᛚᚷᚨ</text>
+              </svg>
+            </div>
+          </div>
+          <!-- C – mangler top (5) -->
+          <div class="tri-card"><div class="tri-title">C</div>
+            <div class="tri">
+              <div class="slot" data-part="top" data-id="C-top">🔑</div><div class="corner left">1</div><div class="corner right">2</div><div class="center-num">12</div>
+              <svg viewBox="0 0 100 90">
+                <defs>
+                  <linearGradient id="stoneC" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0%" stop-color="#84654f"/><stop offset="100%" stop-color="#563f31"/>
+                  </linearGradient>
+                </defs>
+                <polygon points="50,5 5,85 95,85" fill="none" stroke="#1ea6b5" stroke-width="8" opacity=".9"/>
+                <polygon points="50,14 13,82 87,82" fill="url(#stoneC)" stroke="#3a2a20" stroke-width="1.5"/>
+                <text class="runes" x="22" y="66" font-size="10">ᚠ ᛚᛟᚲ ᛋᛏᛟᚾᛖ</text>
+              </svg>
+            </div>
+          </div>
         </div>
       </section>
 
+      <!-- Væg II -->
       <section class="panel">
         <h2>Væg II</h2>
         <div class="board">
-          <div class="tri-card"><div class="tri-title">D</div><div class="tri">
-            <div class="corner top">2</div><div class="corner left">5</div><div class="slot" data-part="right" data-id="D-right">🔑</div><div class="center-num">21</div>
-            <svg viewBox="0 0 100 90"><polygon points="50,5 5,85 95,85" fill="#ff5ea5" opacity=".8" stroke="#27aac7" stroke-width="6"/></svg>
-          </div></div>
-          <div class="tri-card"><div class="tri-title">E</div><div class="tri">
-            <div class="corner top">3</div><div class="slot" data-part="left" data-id="E-left">🔑</div><div class="corner right">4</div><div class="center-num">28</div>
-            <svg viewBox="0 0 100 90"><polygon points="50,5 5,85 95,85" fill="#ff5ea5" opacity=".8" stroke="#27aac7" stroke-width="6"/></svg>
-          </div></div>
-          <div class="tri-card"><div class="tri-title">F</div><div class="tri">
-            <div class="corner top">6</div><div class="corner left">2</div><div class="corner right">5</div><div class="slot" data-part="mid" data-id="F-mid">🔒</div>
-            <svg viewBox="0 0 100 90"><polygon points="50,5 5,85 95,85" fill="#ff5ea5" opacity=".8" stroke="#27aac7" stroke-width="6"/></svg>
-          </div></div>
+          <!-- D – mangler højre (3) -->
+          <div class="tri-card"><div class="tri-title">D</div>
+            <div class="tri">
+              <div class="corner top">2</div><div class="corner left">5</div><div class="slot" data-part="right" data-id="D-right">🔑</div><div class="center-num">21</div>
+              <svg viewBox="0 0 100 90">
+                <defs>
+                  <linearGradient id="stoneD" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0%" stop-color="#8d6f59"/><stop offset="100%" stop-color="#5a4335"/>
+                  </linearGradient>
+                </defs>
+                <polygon points="50,5 5,85 95,85" fill="none" stroke="#1ea6b5" stroke-width="8" opacity=".9"/>
+                <polygon points="50,14 13,82 87,82" fill="url(#stoneD)" stroke="#3a2a20" stroke-width="1.5"/>
+                <text class="runes" x="28" y="64" font-size="9">ᛞᛟᛟᚱ ᛗᚨᚷᛁ</text>
+              </svg>
+            </div>
+          </div>
+          <!-- E – mangler venstre (4) -->
+          <div class="tri-card"><div class="tri-title">E</div>
+            <div class="tri">
+              <div class="corner top">3</div><div class="slot" data-part="left" data-id="E-left">🔑</div><div class="corner right">4</div><div class="center-num">28</div>
+              <svg viewBox="0 0 100 90">
+                <defs>
+                  <linearGradient id="stoneE" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0%" stop-color="#856851"/><stop offset="100%" stop-color="#583f31"/>
+                  </linearGradient>
+                </defs>
+                <polygon points="50,5 5,85 95,85" fill="none" stroke="#1ea6b5" stroke-width="8" opacity=".9"/>
+                <polygon points="50,14 13,82 87,82" fill="url(#stoneE)" stroke="#3a2a20" stroke-width="1.5"/>
+                <text class="runes" x="26" y="63" font-size="9">ᚾᚨᛗᛖ ᚱᚢᚾᛖᚱ</text>
+              </svg>
+            </div>
+          </div>
+          <!-- F – mangler midten (40) -->
+          <div class="tri-card"><div class="tri-title">F</div>
+            <div class="tri">
+              <div class="corner top">6</div><div class="corner left">2</div><div class="corner right">5</div><div class="slot" data-part="mid" data-id="F-mid">🔒</div>
+              <svg viewBox="0 0 100 90">
+                <defs>
+                  <linearGradient id="stoneF" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0%" stop-color="#8a6f5a"/><stop offset="100%" stop-color="#5e4536"/>
+                  </linearGradient>
+                </defs>
+                <polygon points="50,5 5,85 95,85" fill="none" stroke="#1ea6b5" stroke-width="8" opacity=".9"/>
+                <polygon points="50,14 13,82 87,82" fill="url(#stoneF)" stroke="#3a2a20" stroke-width="1.5"/>
+                <text class="runes" x="30" y="60" font-size="10">ᛗᛟᚱᚲ ᚨᚷᛁᚲ</text>
+              </svg>
+            </div>
+          </div>
         </div>
       </section>
     </div>
 
     <div class="msg" id="msg">Find de rigtige nøgler…</div>
 
+    <!-- Nøgler på gulvet -->
     <div class="floor">
       <div class="pool" id="pool">
         <div class="token" draggable="true" data-val="1">1</div>
@@ -190,44 +274,94 @@
   </div>
 
 <script>
-document.querySelectorAll('.token').forEach(t=>{t.dataset.tid=Math.random().toString(36).slice(2);});
-const pool=document.getElementById('pool');const msg=document.getElementById('msg');const slots=document.querySelectorAll('.slot');const unlock=document.getElementById('unlock');
-pool.addEventListener('dragstart',e=>{const t=e.target;if(!t.classList.contains('token')||t.classList.contains('used'))return;e.dataTransfer.setData('text/plain',t.dataset.val);e.dataTransfer.setData('application/x-token-id',t.dataset.tid);e.dataTransfer.effectAllowed='move';});
+/* Unikke id’er til tokens (to ens tal kan bruges separat) */
+document.querySelectorAll('.token').forEach(t=>{ t.dataset.tid=Math.random().toString(36).slice(2); });
+
+const pool=document.getElementById('pool');
+const msg=document.getElementById('msg');
+const slots=document.querySelectorAll('.slot');
+const unlock=document.getElementById('unlock');
+
+pool.addEventListener('dragstart',e=>{
+  const t=e.target;
+  if(!t.classList.contains('token')||t.classList.contains('used')) return;
+  e.dataTransfer.setData('text/plain',t.dataset.val);
+  e.dataTransfer.setData('application/x-token-id',t.dataset.tid);
+  e.dataTransfer.effectAllowed='move';
+});
+
 slots.forEach(slot=>{
   slot.addEventListener('dragover',e=>{e.preventDefault();slot.classList.add('ok');e.dataTransfer.dropEffect='move';});
   slot.addEventListener('dragleave',()=>slot.classList.remove('ok'));
   slot.addEventListener('drop',e=>{
-    e.preventDefault();slot.classList.remove('ok','bad');if(slot.classList.contains('filled'))return;
-    const val=Number(e.dataTransfer.getData('text/plain'));const tid=e.dataTransfer.getData('application/x-token-id');
-    const token=[...document.querySelectorAll('.token')].find(t=>t.dataset.tid===tid&&!t.classList.contains('used'));if(!token)return;
-    if(validate(slot,val)){slot.textContent=val;slot.classList.add('filled');token.classList.add('used');maybeUnlock();}
-    else{slot.classList.add('bad');msg.textContent='Denne nøgle passer ikke i det nøglehul.';setTimeout(()=>slot.classList.remove('bad'),650);}
+    e.preventDefault();
+    slot.classList.remove('ok','bad');
+    if(slot.classList.contains('filled')) return;
+
+    const val=Number(e.dataTransfer.getData('text/plain'));
+    const tid=e.dataTransfer.getData('application/x-token-id');
+    const token=[...document.querySelectorAll('.token')].find(t=>t.dataset.tid===tid&&!t.classList.contains('used'));
+    if(!token) return;
+
+    if(validate(slot,val)){
+      slot.textContent=val;
+      slot.classList.add('filled');
+      token.classList.add('used');
+      maybeUnlock();
+    }else{
+      slot.classList.add('bad');
+      msg.textContent='Denne nøgle passer ikke i det nøglehul.';
+      setTimeout(()=>slot.classList.remove('bad'),650);
+    }
   });
 });
+
+/* Matematik: (top + venstre) × højre = midten */
 function validate(slot,val){
-  const id=slot.dataset.id;const[label,part]=id.split('-');
+  const id=slot.dataset.id;
+  const [label,part]=id.split('-');
+
   const data={
     A:{top:2,left:1,right:3,mid:9,missing:null},
-    B:{top:4,left:2,right:null,mid:18,missing:'right'},
-    C:{top:null,left:1,right:2,mid:12,missing:'top'},
-    D:{top:2,left:5,right:null,mid:21,missing:'right'},
-    E:{top:3,left:null,right:4,mid:28,missing:'left'},
-    F:{top:6,left:2,right:5,mid:null,missing:'mid'},
+    B:{top:4,left:2,right:null,mid:18,missing:'right'}, // =3
+    C:{top:null,left:1,right:2,mid:12,missing:'top'},   // =5
+    D:{top:2,left:5,right:null,mid:21,missing:'right'}, // =3
+    E:{top:3,left:null,right:4,mid:28,missing:'left'},  // =4
+    F:{top:6,left:2,right:5,mid:null,missing:'mid'},    // =40
   }[label];
-  const top=(part==='top')?val:data.top;
-  const left=(part==='left')?val:data.left;
-  const right=(part==='right')?val:data.right;
-  const mid=(part==='mid')?val:data.mid;
+
+  const top  =(part==='top')  ? val : data.top;
+  const left =(part==='left') ? val : data.left;
+  const right=(part==='right')? val : data.right;
+  const mid  =(part==='mid')  ? val : data.mid;
+
   switch(data.missing){
-    case 'right':return(top+left)*val===mid;
-    case 'top':return(val+left)*right===mid;
-    case 'left':return(top+val)*right===mid;
-    case 'mid':return(top+left)*right===val;
-    default:return false;
+    case 'right': return (top+left)*val===mid;
+    case 'top':   return (val+left)*right===mid;
+    case 'left':  return (top+val)*right===mid;
+    case 'mid':   return (top+left)*right===val;
+    default: return false;
   }
 }
-function maybeUnlock(){const totalMissing=document.querySelectorAll('.slot').length;const filled=document.querySelectorAll('.slot.filled').length;if(filled===totalMissing){unlock.style.display='block';msg.textContent='Alle nøgler er sat korrekt!';}}
-document.getElementById('reset').addEventListener('click',()=>{document.querySelectorAll('.slot').forEach(s=>{s.textContent=(s.dataset.part==='mid'?'🔒':'🔑');s.classList.remove('filled','ok','bad');});document.querySelectorAll('.token').forEach(t=>t.classList.remove('used'));unlock.style.display='none';msg.textContent='Find de rigtige nøgler…';});
+
+function maybeUnlock(){
+  const totalMissing=document.querySelectorAll('.slot').length;
+  const filled=document.querySelectorAll('.slot.filled').length;
+  if(filled===totalMissing){
+    unlock.style.display='block';
+    msg.textContent='Alle nøgler er sat korrekt!';
+  }
+}
+
+document.getElementById('reset').addEventListener('click',()=>{
+  document.querySelectorAll('.slot').forEach(s=>{
+    s.textContent=(s.dataset.part==='mid'?'🔒':'🔑');
+    s.classList.remove('filled','ok','bad');
+  });
+  document.querySelectorAll('.token').forEach(t=>t.classList.remove('used'));
+  unlock.style.display='none';
+  msg.textContent='Find de rigtige nøgler…';
+});
 </script>
 </body>
 </html>
