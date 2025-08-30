@@ -20,7 +20,7 @@
   .walls{
     width:100%;
     display:grid;
-    gap:28px;                     /* was 18px */
+    gap:28px;
     grid-template-columns:1fr 1fr;
     align-items:start;
   }
@@ -32,39 +32,37 @@
     border:1.5px solid #bba753;
     border-radius:14px;
     box-shadow:0 4px 22px #000a;
-    padding:22px 22px 24px;       /* was 16px */
+    padding:22px 22px 24px;
   }
   .panel h2{
-    margin:0 0 16px 0;            /* was 10px */
+    margin:0 0 16px 0;
     font-size:1.15rem;color:#e8d387;font-weight:700;letter-spacing:.3px
   }
 
-  /* MERE LUFT mellem kortene */
+  /* CENTRER kortene i hver væg */
   .board{
-    display:grid;
-    grid-template-columns:repeat(3,minmax(220px,1fr)); /* bredere kort-kolonner */
-    gap:28px;                     /* was 22px */
-    justify-items:center
+    display:flex;
+    flex-wrap:wrap;          /* hop ned på ny række ved behov */
+    gap:28px;                /* luft mellem kortene */
+    justify-content:center;  /* centrer hele rækken i panelet */
   }
-  @media (max-width:1200px){.board{grid-template-columns:repeat(2,minmax(220px,1fr))}}
-  @media (max-width:620px){ .board{grid-template-columns:1fr} }
 
-  /* Kort med ekstra padding */
+  /* Kort med fast bredde så centring bliver stabil */
   .tri-card{
     background:#0f0b05c0;
     border:1.5px solid #8c7b3f;
     border-radius:14px;
     box-shadow:0 3px 14px #000b;
-    padding:20px 18px;            /* was 16px 14px */
-    width:100%;
+    padding:20px 18px;
+    width:260px;             /* fast bredde -> pæn centrering */
     display:flex;flex-direction:column;align-items:center
   }
   .tri-title{font-weight:800;margin:2px 0 10px 0;color:#e8d387;letter-spacing:.4px}
 
-  /* Selve trekanten – en smule større, men med tal længere inde */
+  /* Selve trekanten – lidt større, tal trukket ind */
   .tri{
-    width:230px;                  /* was 210px */
-    height:198px;                 /* was 180px */
+    width:230px;
+    height:198px;
     position:relative;
     isolation:isolate
   }
@@ -75,23 +73,23 @@
     font-size:30px;font-weight:900;color:#ffdf91;text-shadow:0 1px 6px #000
   }
 
-  /* Hjørnetal – tydeligere og længere inde */
+  /* Hjørnetal */
   .corner{
     position:absolute;font-size:22px;font-weight:900;
     color:#ffd36b;text-shadow:0 1px 5px #000
   }
-  .corner.top{left:50%;top:12px;transform:translateX(-50%)} /* was top:6px */
-  .corner.left{left:16px;bottom:20px}                        /* was 10px/14px */
+  .corner.top{left:50%;top:12px;transform:translateX(-50%)}
+  .corner.left{left:16px;bottom:20px}
   .corner.right{right:16px;bottom:20px}
 
-  /* Nøglehuller – også længere inde fra kanten */
+  /* Nøglehuller */
   .slot{
     position:absolute;display:flex;align-items:center;justify-content:center;
     width:50px;height:50px;border-radius:12px;
     border:2px dashed #d9bc6b;background:#2b1a0d;
     color:#9b8650;font-weight:900;font-size:22px;box-shadow:inset 0 1px 6px #0008;
   }
-  .slot[data-part="top"]{left:50%;top:6px;transform:translateX(-50%)} /* was top:0 */
+  .slot[data-part="top"]{left:50%;top:6px;transform:translateX(-50%)}
   .slot[data-part="left"]{left:14px;bottom:16px}
   .slot[data-part="right"]{right:14px;bottom:16px}
   .slot[data-part="mid"]{left:50%;top:53%;transform:translate(-50%,-50%)}
@@ -100,19 +98,18 @@
   .slot.ok{outline:2px solid #57c979}
   .slot.bad{outline:2px solid #e46b42}
 
-  /* Nøgler på gulvet – også lidt mere luft */
+  /* Nøgler på gulvet */
   .floor{
-    margin-top:26px;              /* was 18px */
+    margin-top:26px;
     padding:18px 14px;
     background:#1b1208;border:1.5px solid #bba753;border-radius:12px;
     box-shadow:inset 0 2px 10px #000;max-width:1000px;width:100%;
   }
   .pool{
     display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(86px,1fr)); /* pæne rækker */
+    grid-template-columns:repeat(auto-fit,minmax(86px,1fr));
     gap:12px;
   }
-
   .token{
     user-select:none;cursor:grab;display:flex;align-items:center;justify-content:center;
     padding:10px 0;border-radius:12px;font-weight:900;font-size:20px;line-height:1;
