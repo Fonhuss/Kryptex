@@ -1,1 +1,207 @@
-sa
+<!DOCTYPE html>
+<html lang="da">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Dørpuzzle – Triangelkode</title>
+<style>
+  /* --- Basestil matchet til Kryptex-look --- */
+  html,body{height:100%;margin:0}
+  body{
+    min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;
+    font-family:'Segoe UI',sans-serif;box-sizing:border-box;
+    background:radial-gradient(ellipse at 50% 40%,#4e3620 0%,#2b1a0d 100%);
+    background-attachment:fixed;color:#e2c17d
+  }
+  .wrap{width:100%;max-width:1100px;padding:24px 16px;display:flex;flex-direction:column;align-items:center}
+  h1{margin:8px 0 2px 0;font-size:1.8rem;letter-spacing:.5px;color:#f5e4a6;text-shadow:0 2px 10px #000}
+  .sub{opacity:.9;margin-bottom:14px}
+
+  /* Kort tavle */
+  .panel{
+    width:100%;max-width:980px;background:#1b1208d0;border:1.5px solid #bba753;border-radius:12px;
+    box-shadow:0 4px 22px #000a;padding:16px
+  }
+  .board{display:grid;grid-template-columns:repeat(4,minmax(180px,1fr));gap:16px;justify-items:center}
+  @media (max-width:950px){.board{grid-template-columns:repeat(2,minmax(180px,1fr))}}
+  @media (max-width:480px){.board{grid-template-columns:1fr}}
+
+  /* Triangelkort */
+  .tri-card{background:#0f0b05c0;border:1.5px solid #8c7b3f;border-radius:12px;box-shadow:0 3px 14px #000b;padding:10px 8px;width:100%;display:flex;flex-direction:column;align-items:center}
+  .tri-title{font-weight:700;margin:4px 0 6px 0;color:#e8d387}
+  .tri{width:180px;height:155px;position:relative}
+  svg{width:100%;height:100%;display:block}
+  .center-num{position:absolute;inset:auto;left:50%;top:54%;transform:translate(-50%,-50%);font-size:28px;font-weight:800;color:#ffdf91;text-shadow:0 1px 6px #000}
+  .corner{position:absolute;font-size:20px;font-weight:800;color:#ffd36b;text-shadow:0 1px 5px #000}
+  .corner.top{left:50%;top:-6px;transform:translateX(-50%)}
+  .corner.left{left:-6px;bottom:10px}
+  .corner.right{right:-6px;bottom:10px}
+  .slot{position:absolute;right:-6px;bottom:10px;width:38px;height:38px;border-radius:8px;border:1.5px dashed #d9bc6b;background:#2b1a0d;display:flex;align-items:center;justify-content:center;color:#9b8650;font-weight:900;font-size:22px}
+  .slot.filled{border-style:solid;background:#3b2a13;color:#f7e9b5}
+  .ok{outline:2px solid #57c979}
+  .bad{outline:2px solid #e46b42}
+
+  /* Gulv med talbrikker */
+  .floor{margin-top:16px;padding:14px 10px;background:#1b1208;border:1.5px solid #bba753;border-radius:10px;box-shadow:inset 0 2px 10px #000}
+  .pool{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;max-width:720px}
+  .token{
+    user-select:none;cursor:grab;display:flex;align-items:center;justify-content:center;
+    width:48px;height:48px;border-radius:10px;font-weight:900;font-size:22px;
+    color:#4e3620;background:linear-gradient(135deg,#f7e9b5 0%,#bba753 100%);
+    border:2px solid #8c7b3f;box-shadow:0 3px 10px #0007
+  }
+  .token:active{cursor:grabbing}
+
+  /* Meddelelser */
+  .msg{margin:14px 0 4px 0;min-height:28px;color:#f5e4a6;text-align:center}
+  .unlock{
+    margin-top:16px;padding:14px 18px;background:#f0e5c0;border:2px solid #bba753;border-radius:12px;box-shadow:0 4px 22px #a58b3a55;color:#6d5a21;display:none
+  }
+  .btn{margin-top:12px;padding:10px 18px;border-radius:10px;border:2px solid #bba753;background:linear-gradient(90deg,#fff6c6 0%,#e8d387 100%);font-weight:800;color:#6d5a21;cursor:pointer}
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <h1>Triangel-koden</h1>
+    <div class="sub">Reglen: <em>(top + venstre) × højre = tallet i midten</em>. Sæt det manglende gulvtal på plads for at låse døren.</div>
+
+    <div class="panel">
+      <div class="board">
+        <!-- Kort 1 -->
+        <div class="tri-card">
+          <div class="tri-title">A</div>
+          <div class="tri">
+            <div class="corner top">2</div>
+            <div class="corner left">1</div>
+            <div class="corner right">3</div>
+            <div class="center-num">9</div>
+            <svg viewBox="0 0 100 90" aria-hidden="true">
+              <polygon points="50,5 5,85 95,85" fill="#ff5ea5" opacity=".8" stroke="#27aac7" stroke-width="6" />
+            </svg>
+          </div>
+        </div>
+        <!-- Kort 2 -->
+        <div class="tri-card">
+          <div class="tri-title">B</div>
+          <div class="tri">
+            <div class="corner top">4</div>
+            <div class="corner left">2</div>
+            <div class="corner right">3</div>
+            <div class="center-num">18</div>
+            <svg viewBox="0 0 100 90" aria-hidden="true">
+              <polygon points="50,5 5,85 95,85" fill="#ff5ea5" opacity=".8" stroke="#27aac7" stroke-width="6" />
+            </svg>
+          </div>
+        </div>
+        <!-- Kort 3 -->
+        <div class="tri-card">
+          <div class="tri-title">C</div>
+          <div class="tri">
+            <div class="corner top">5</div>
+            <div class="corner left">1</div>
+            <div class="corner right">2</div>
+            <div class="center-num">12</div>
+            <svg viewBox="0 0 100 90" aria-hidden="true">
+              <polygon points="50,5 5,85 95,85" fill="#ff5ea5" opacity=".8" stroke="#27aac7" stroke-width="6" />
+            </svg>
+          </div>
+        </div>
+        <!-- Kort 4 (med slot) -->
+        <div class="tri-card" id="card4">
+          <div class="tri-title">D</div>
+          <div class="tri">
+            <div class="corner top" id="t">2</div>
+            <div class="corner left" id="l">5</div>
+            <div class="slot" id="slot" aria-label="Slip tal her">?</div>
+            <div class="center-num" id="mid">21</div>
+            <svg viewBox="0 0 100 90" aria-hidden="true">
+              <polygon points="50,5 5,85 95,85" fill="#ff5ea5" opacity=".8" stroke="#27aac7" stroke-width="6" />
+            </svg>
+          </div>
+        </div>
+      </div>
+
+      <div class="msg" id="msg">Gulvtal:</div>
+      <div class="floor">
+        <div class="pool" id="pool">
+          <!-- Tal på gulvet (inkl. decoys) -->
+          <div class="token" draggable="true" data-val="1">1</div>
+          <div class="token" draggable="true" data-val="2">2</div>
+          <div class="token" draggable="true" data-val="3">3</div>
+          <div class="token" draggable="true" data-val="4">4</div>
+          <div class="token" draggable="true" data-val="5">5</div>
+          <div class="token" draggable="true" data-val="6">6</div>
+          <div class="token" draggable="true" data-val="7">7</div>
+          <div class="token" draggable="true" data-val="8">8</div>
+        </div>
+      </div>
+
+      <div class="unlock" id="unlock">
+        Døren giver efter med et klik, og stenene glider fra hinanden som om de har ventet på netop dette øjeblik. 
+        <div><button class="btn" id="reset">Prøv igen / Nulstil</button></div>
+      </div>
+    </div>
+  </div>
+
+<script>
+  // Drag & drop
+  const pool = document.getElementById('pool');
+  const slot = document.getElementById('slot');
+  const msg = document.getElementById('msg');
+  const unlock = document.getElementById('unlock');
+  const resetBtn = document.getElementById('reset');
+
+  let placedToken = null;
+
+  pool.addEventListener('dragstart', e =>{
+    if(!e.target.classList.contains('token')) return;
+    e.dataTransfer.setData('text/plain', e.target.dataset.val);
+    e.dataTransfer.effectAllowed = 'move';
+  });
+
+  slot.addEventListener('dragover', e =>{
+    e.preventDefault();
+    e.dataTransfer.dropEffect = 'move';
+    slot.classList.add('ok');
+  });
+  slot.addEventListener('dragleave', ()=> slot.classList.remove('ok'));
+
+  slot.addEventListener('drop', e =>{
+    e.preventDefault();
+    slot.classList.remove('ok','bad');
+    if(unlock.style.display==='block') return;
+    const val = Number(e.dataTransfer.getData('text/plain'));
+    const token = [...document.querySelectorAll('.token')].find(t=> Number(t.dataset.val)===val && !t.classList.contains('used'));
+    if(!token) return;
+    // Vis i slot
+    slot.textContent = val; slot.classList.add('filled');
+    placedToken = token; token.classList.add('used'); token.style.opacity='.45'; token.style.cursor='not-allowed';
+    validate();
+  });
+
+  function validate(){
+    const top = 2, left = 5, right = Number(slot.textContent)||NaN, mid = 21;
+    if(Number.isNaN(right)) return;
+    const ok = (top+left)*right === mid; // (2+5)*3 = 21
+    if(ok){
+      msg.textContent = 'Rigtigt! (2 + 5) × '+ right +' = 21';
+      unlock.style.display = 'block';
+    } else {
+      msg.textContent = 'Noget er forkert. Prøv et andet tal.';
+      slot.classList.add('bad');
+      // Lad spilleren prøve igen – send brik tilbage
+      setTimeout(()=>{
+        slot.textContent='?'; slot.classList.remove('filled','bad');
+        if(placedToken){ placedToken.classList.remove('used'); placedToken.style.opacity='1'; placedToken.style.cursor='grab'; placedToken=null; }
+      }, 700);
+    }
+  }
+
+  resetBtn.addEventListener('click', ()=>{
+    slot.textContent='?'; slot.classList.remove('filled','ok','bad');
+    document.querySelectorAll('.token').forEach(t=>{t.classList.remove('used');t.style.opacity='1';t.style.cursor='grab'});
+    msg.textContent = 'Gulvtal:'; unlock.style.display='none';
+  });
+</script>
+</body>
+</html>
