@@ -14,7 +14,6 @@
   }
   .wrap{width:100%;max-width:1200px;padding:24px 16px;display:flex;flex-direction:column;align-items:center}
   h1{margin:8px 0 2px 0;font-size:1.9rem;letter-spacing:.5px;color:#f5e4a6;text-shadow:0 2px 10px #000}
-  .sub{opacity:.95;margin-bottom:18px}
 
   .walls{width:100%;display:grid;gap:18px;grid-template-columns:1fr 1fr;}
   @media (max-width:900px){ .walls{grid-template-columns:1fr} }
@@ -94,7 +93,6 @@
 <body>
   <div class="wrap">
     <h1>Nøgletrekanten</h1>
-    <div class="sub">Regel: <em>(top + venstre) × højre = midten</em>. Brug nøglerne til at udfylde nøglehullerne. Én trekant er fuld som eksempel.</div>
 
     <div class="walls">
       <section class="panel">
@@ -251,11 +249,11 @@ function validate(slot, val){
 
   const data = {
     A:{top:2,left:1,right:3,mid:9, missing:null},
-    B:{top:4,left:2,right:null,mid:18, missing:'right'},   // right=3
-    C:{top:null,left:1,right:2,mid:12, missing:'top'},     // top=5
-    D:{top:2,left:5,right:null,mid:21, missing:'right'},   // right=3
-    E:{top:3,left:null,right:4,mid:28, missing:'left'},    // left=4
-    F:{top:6,left:2,right:5,mid:null, missing:'mid'},      // mid=40
+    B:{top:4,left:2,right:null,mid:18, missing:'right'},
+    C:{top:null,left:1,right:2,mid:12, missing:'top'},
+    D:{top:2,left:5,right:null,mid:21, missing:'right'},
+    E:{top:3,left:null,right:4,mid:28, missing:'left'},
+    F:{top:6,left:2,right:5,mid:null, missing:'mid'},
   }[label];
 
   const top  = (part==='top')  ? val : data.top;
