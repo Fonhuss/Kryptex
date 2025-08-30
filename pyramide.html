@@ -13,18 +13,31 @@
     background-attachment:fixed;color:#e2c17d
   }
 
-  .wrap{width:100%;max-width:1260px;padding:36px 20px 28px;display:flex;flex-direction:column;align-items:center}
-  h1{margin:0 0 18px 0;font-size:2.1rem;letter-spacing:.5px;color:#f5e4a6;text-shadow:0 2px 10px #000}
+  .wrap{width:100%;max-width:1260px;padding:24px 20px 28px;display:flex;flex-direction:column;align-items:center}
+  h1{margin:10px 0 16px;font-size:2rem;letter-spacing:.5px;color:#f5e4a6;text-shadow:0 2px 10px #000}
 
-  /* Mere luft mellem de to vægge */
+  /* Tilbage-knap */
+  .back-btn{
+    align-self:flex-start;
+    margin-bottom:12px;
+    padding:8px 14px;
+    border-radius:8px;
+    border:2px solid #bba753;
+    background:linear-gradient(90deg,#fff6c6 0%,#e8d387 100%);
+    font-weight:700;
+    color:#4e3620;
+    text-decoration:none;
+    box-shadow:0 2px 8px #0005;
+  }
+  .back-btn:hover{filter:brightness(1.05)}
+
   .walls{
     width:100%;
     display:grid;
-    gap:28px;
+    gap:24px;
     grid-template-columns:1fr 1fr;
-    align-items:start;
   }
-  @media (max-width:1100px){ .walls{grid-template-columns:1fr} }
+  @media (max-width:950px){ .walls{grid-template-columns:1fr} }
 
   .panel{
     width:100%;
@@ -32,187 +45,121 @@
     border:1.5px solid #bba753;
     border-radius:14px;
     box-shadow:0 4px 22px #000a;
-    padding:22px 22px 24px;
+    padding:20px;
   }
-  .panel h2{
-    margin:0 0 16px 0;
-    font-size:1.15rem;color:#e8d387;font-weight:700;letter-spacing:.3px
-  }
+  .panel h2{margin:0 0 14px 0;font-size:1.15rem;color:#e8d387;font-weight:700}
 
-  /* CENTRER kortene i hver væg */
   .board{
-    display:flex;
-    flex-wrap:wrap;          /* hop ned på ny række ved behov */
-    gap:28px;                /* luft mellem kortene */
-    justify-content:center;  /* centrer hele rækken i panelet */
+    display:flex;flex-wrap:wrap;gap:22px;justify-content:center
   }
 
-  /* Kort med fast bredde så centring bliver stabil */
   .tri-card{
     background:#0f0b05c0;
     border:1.5px solid #8c7b3f;
     border-radius:14px;
     box-shadow:0 3px 14px #000b;
-    padding:20px 18px;
-    width:260px;             /* fast bredde -> pæn centrering */
+    padding:16px;
+    width:240px;
     display:flex;flex-direction:column;align-items:center
   }
-  .tri-title{font-weight:800;margin:2px 0 10px 0;color:#e8d387;letter-spacing:.4px}
+  .tri-title{font-weight:800;margin:0 0 8px 0;color:#e8d387}
 
-  /* Selve trekanten – lidt større, tal trukket ind */
   .tri{
-    width:230px;
-    height:198px;
-    position:relative;
-    isolation:isolate
+    width:210px;height:180px;position:relative;isolation:isolate
   }
-  svg{width:100%;height:100%;display:block}
+  @media (max-width:600px){
+    .tri{width:160px;height:140px}
+    .tri-card{width:180px}
+    .corner{font-size:18px}
+    .center-num{font-size:22px}
+  }
+  svg{width:100%;height:100%}
   .center-num{
-    position:absolute;left:50%;top:53%;
-    transform:translate(-50%,-50%);
-    font-size:30px;font-weight:900;color:#ffdf91;text-shadow:0 1px 6px #000
+    position:absolute;left:50%;top:53%;transform:translate(-50%,-50%);
+    font-size:28px;font-weight:900;color:#ffdf91;text-shadow:0 1px 6px #000
   }
 
-  /* Hjørnetal */
   .corner{
-    position:absolute;font-size:22px;font-weight:900;
-    color:#ffd36b;text-shadow:0 1px 5px #000
+    position:absolute;font-size:20px;font-weight:900;color:#ffd36b;text-shadow:0 1px 5px #000
   }
-  .corner.top{left:50%;top:12px;transform:translateX(-50%)}
-  .corner.left{left:16px;bottom:20px}
-  .corner.right{right:16px;bottom:20px}
+  .corner.top{left:50%;top:10px;transform:translateX(-50%)}
+  .corner.left{left:14px;bottom:16px}
+  .corner.right{right:14px;bottom:16px}
 
-  /* Nøglehuller */
   .slot{
     position:absolute;display:flex;align-items:center;justify-content:center;
-    width:50px;height:50px;border-radius:12px;
+    width:46px;height:46px;border-radius:10px;
     border:2px dashed #d9bc6b;background:#2b1a0d;
-    color:#9b8650;font-weight:900;font-size:22px;box-shadow:inset 0 1px 6px #0008;
+    color:#9b8650;font-weight:900;font-size:20px;
   }
-  .slot[data-part="top"]{left:50%;top:6px;transform:translateX(-50%)}
-  .slot[data-part="left"]{left:14px;bottom:16px}
-  .slot[data-part="right"]{right:14px;bottom:16px}
+  .slot[data-part="top"]{left:50%;top:4px;transform:translateX(-50%)}
+  .slot[data-part="left"]{left:12px;bottom:14px}
+  .slot[data-part="right"]{right:12px;bottom:14px}
   .slot[data-part="mid"]{left:50%;top:53%;transform:translate(-50%,-50%)}
-
   .slot.filled{border-style:solid;background:#3b2a13;color:#f7e9b5}
-  .slot.ok{outline:2px solid #57c979}
-  .slot.bad{outline:2px solid #e46b42}
 
-  /* Nøgler på gulvet */
   .floor{
-    margin-top:26px;
-    padding:18px 14px;
-    background:#1b1208;border:1.5px solid #bba753;border-radius:12px;
-    box-shadow:inset 0 2px 10px #000;max-width:1000px;width:100%;
+    margin-top:20px;padding:16px;background:#1b1208;border:1.5px solid #bba753;border-radius:12px;
+    box-shadow:inset 0 2px 10px #000;max-width:1000px;width:100%
   }
-  .pool{
-    display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(86px,1fr));
-    gap:12px;
-  }
+  .pool{display:grid;grid-template-columns:repeat(auto-fit,minmax(80px,1fr));gap:10px}
   .token{
     user-select:none;cursor:grab;display:flex;align-items:center;justify-content:center;
-    padding:10px 0;border-radius:12px;font-weight:900;font-size:20px;line-height:1;
+    padding:8px 0;border-radius:10px;font-weight:900;font-size:18px;
     color:#4e3620;background:linear-gradient(135deg,#f7e9b5 0%,#bba753 100%);
-    border:2px solid #8c7b3f;box-shadow:0 3px 10px #0007;height:56px;
+    border:2px solid #8c7b3f;box-shadow:0 2px 8px #0006;height:50px
   }
-  .token:active{cursor:grabbing}
-  .token.used{opacity:.45;cursor:not-allowed;filter:grayscale(.12)}
-
-  .msg{margin:18px 0 6px 0;min-height:28px;color:#f5e4a6;text-align:center}
-  .unlock{
-    margin-top:18px;padding:16px 20px;background:#f0e5c0;border:2px solid #bba753;border-radius:12px;box-shadow:0 4px 22px #a58b3a55;color:#6d5a21;display:none
-  }
-  .btn{margin-top:12px;padding:10px 18px;border-radius:10px;border:2px solid #bba753;background:linear-gradient(90deg,#fff6c6 0%,#e8d387 100%);font-weight:800;color:#6d5a21;cursor:pointer}
+  .token.used{opacity:.45;cursor:not-allowed}
+  .msg{margin:16px 0 6px;color:#f5e4a6;text-align:center}
+  .unlock{margin-top:16px;padding:14px 18px;background:#f0e5c0;border:2px solid #bba753;border-radius:12px;box-shadow:0 4px 20px #0006;color:#6d5a21;display:none}
+  .btn{margin-top:10px;padding:8px 14px;border-radius:8px;border:2px solid #bba753;background:linear-gradient(90deg,#fff6c6 0%,#e8d387 100%);font-weight:700;color:#6d5a21;cursor:pointer}
 </style>
 </head>
 <body>
   <div class="wrap">
+    <a href="index.html" class="back-btn">← Tilbage til Arkivet</a>
     <h1>Nøgletrekanten</h1>
 
     <div class="walls">
       <section class="panel">
         <h2>Væg I</h2>
         <div class="board">
-          <!-- A – fuld (facit) -->
-          <div class="tri-card">
-            <div class="tri-title">A</div>
-            <div class="tri">
-              <div class="corner top">2</div>
-              <div class="corner left">1</div>
-              <div class="corner right">3</div>
-              <div class="center-num">9</div>
-              <svg viewBox="0 0 100 90"><polygon points="50,5 5,85 95,85" fill="#ff5ea5" opacity=".8" stroke="#27aac7" stroke-width="6"/></svg>
-            </div>
-          </div>
-          <!-- B – mangler højre (3) -->
-          <div class="tri-card">
-            <div class="tri-title">B</div>
-            <div class="tri">
-              <div class="corner top">4</div>
-              <div class="corner left">2</div>
-              <div class="slot" data-part="right" data-id="B-right">🔑</div>
-              <div class="center-num">18</div>
-              <svg viewBox="0 0 100 90"><polygon points="50,5 5,85 95,85" fill="#ff5ea5" opacity=".8" stroke="#27aac7" stroke-width="6"/></svg>
-            </div>
-          </div>
-          <!-- C – mangler top (5) -->
-          <div class="tri-card">
-            <div class="tri-title">C</div>
-            <div class="tri">
-              <div class="slot" data-part="top" data-id="C-top">🔑</div>
-              <div class="corner left">1</div>
-              <div class="corner right">2</div>
-              <div class="center-num">12</div>
-              <svg viewBox="0 0 100 90"><polygon points="50,5 5,85 95,85" fill="#ff5ea5" opacity=".8" stroke="#27aac7" stroke-width="6"/></svg>
-            </div>
-          </div>
+          <div class="tri-card"><div class="tri-title">A</div><div class="tri">
+            <div class="corner top">2</div><div class="corner left">1</div><div class="corner right">3</div><div class="center-num">9</div>
+            <svg viewBox="0 0 100 90"><polygon points="50,5 5,85 95,85" fill="#ff5ea5" opacity=".8" stroke="#27aac7" stroke-width="6"/></svg>
+          </div></div>
+          <div class="tri-card"><div class="tri-title">B</div><div class="tri">
+            <div class="corner top">4</div><div class="corner left">2</div><div class="slot" data-part="right" data-id="B-right">🔑</div><div class="center-num">18</div>
+            <svg viewBox="0 0 100 90"><polygon points="50,5 5,85 95,85" fill="#ff5ea5" opacity=".8" stroke="#27aac7" stroke-width="6"/></svg>
+          </div></div>
+          <div class="tri-card"><div class="tri-title">C</div><div class="tri">
+            <div class="slot" data-part="top" data-id="C-top">🔑</div><div class="corner left">1</div><div class="corner right">2</div><div class="center-num">12</div>
+            <svg viewBox="0 0 100 90"><polygon points="50,5 5,85 95,85" fill="#ff5ea5" opacity=".8" stroke="#27aac7" stroke-width="6"/></svg>
+          </div></div>
         </div>
       </section>
 
       <section class="panel">
         <h2>Væg II</h2>
         <div class="board">
-          <!-- D – mangler højre (3) -->
-          <div class="tri-card">
-            <div class="tri-title">D</div>
-            <div class="tri">
-              <div class="corner top">2</div>
-              <div class="corner left">5</div>
-              <div class="slot" data-part="right" data-id="D-right">🔑</div>
-              <div class="center-num">21</div>
-              <svg viewBox="0 0 100 90"><polygon points="50,5 5,85 95,85" fill="#ff5ea5" opacity=".8" stroke="#27aac7" stroke-width="6"/></svg>
-            </div>
-          </div>
-          <!-- E – mangler venstre (4) -->
-          <div class="tri-card">
-            <div class="tri-title">E</div>
-            <div class="tri">
-              <div class="corner top">3</div>
-              <div class="slot" data-part="left" data-id="E-left">🔑</div>
-              <div class="corner right">4</div>
-              <div class="center-num">28</div>
-              <svg viewBox="0 0 100 90"><polygon points="50,5 5,85 95,85" fill="#ff5ea5" opacity=".8" stroke="#27aac7" stroke-width="6"/></svg>
-            </div>
-          </div>
-          <!-- F – mangler midten (40) -->
-          <div class="tri-card">
-            <div class="tri-title">F</div>
-            <div class="tri">
-              <div class="corner top">6</div>
-              <div class="corner left">2</div>
-              <div class="corner right">5</div>
-              <div class="slot" data-part="mid" data-id="F-mid">🔒</div>
-              <svg viewBox="0 0 100 90"><polygon points="50,5 5,85 95,85" fill="#ff5ea5" opacity=".8" stroke="#27aac7" stroke-width="6"/></svg>
-            </div>
-          </div>
+          <div class="tri-card"><div class="tri-title">D</div><div class="tri">
+            <div class="corner top">2</div><div class="corner left">5</div><div class="slot" data-part="right" data-id="D-right">🔑</div><div class="center-num">21</div>
+            <svg viewBox="0 0 100 90"><polygon points="50,5 5,85 95,85" fill="#ff5ea5" opacity=".8" stroke="#27aac7" stroke-width="6"/></svg>
+          </div></div>
+          <div class="tri-card"><div class="tri-title">E</div><div class="tri">
+            <div class="corner top">3</div><div class="slot" data-part="left" data-id="E-left">🔑</div><div class="corner right">4</div><div class="center-num">28</div>
+            <svg viewBox="0 0 100 90"><polygon points="50,5 5,85 95,85" fill="#ff5ea5" opacity=".8" stroke="#27aac7" stroke-width="6"/></svg>
+          </div></div>
+          <div class="tri-card"><div class="tri-title">F</div><div class="tri">
+            <div class="corner top">6</div><div class="corner left">2</div><div class="corner right">5</div><div class="slot" data-part="mid" data-id="F-mid">🔒</div>
+            <svg viewBox="0 0 100 90"><polygon points="50,5 5,85 95,85" fill="#ff5ea5" opacity=".8" stroke="#27aac7" stroke-width="6"/></svg>
+          </div></div>
         </div>
       </section>
     </div>
 
     <div class="msg" id="msg">Find de rigtige nøgler…</div>
 
-    <!-- Nøgler på gulvet i pæne rækker -->
     <div class="floor">
       <div class="pool" id="pool">
         <div class="token" draggable="true" data-val="1">1</div>
@@ -243,96 +190,44 @@
   </div>
 
 <script>
-/* Unikke id’er til tokens (så du kan have to “3”’ere) */
-document.querySelectorAll('.token').forEach(t=>{
-  t.dataset.tid = Math.random().toString(36).slice(2);
-});
-
-const pool = document.getElementById('pool');
-const msg  = document.getElementById('msg');
-const slots= document.querySelectorAll('.slot');
-const unlock = document.getElementById('unlock');
-
-pool.addEventListener('dragstart', e =>{
-  const t = e.target;
-  if (!t.classList.contains('token') || t.classList.contains('used')) return;
-  e.dataTransfer.setData('text/plain', t.dataset.val);
-  e.dataTransfer.setData('application/x-token-id', t.dataset.tid);
-  e.dataTransfer.effectAllowed = 'move';
-});
-
+document.querySelectorAll('.token').forEach(t=>{t.dataset.tid=Math.random().toString(36).slice(2);});
+const pool=document.getElementById('pool');const msg=document.getElementById('msg');const slots=document.querySelectorAll('.slot');const unlock=document.getElementById('unlock');
+pool.addEventListener('dragstart',e=>{const t=e.target;if(!t.classList.contains('token')||t.classList.contains('used'))return;e.dataTransfer.setData('text/plain',t.dataset.val);e.dataTransfer.setData('application/x-token-id',t.dataset.tid);e.dataTransfer.effectAllowed='move';});
 slots.forEach(slot=>{
-  slot.addEventListener('dragover', e =>{ e.preventDefault(); slot.classList.add('ok'); e.dataTransfer.dropEffect='move'; });
-  slot.addEventListener('dragleave', ()=> slot.classList.remove('ok'));
-  slot.addEventListener('drop', e =>{
-    e.preventDefault();
-    slot.classList.remove('ok','bad');
-    if (slot.classList.contains('filled')) return;
-
-    const val = Number(e.dataTransfer.getData('text/plain'));
-    const tid = e.dataTransfer.getData('application/x-token-id');
-    const token = [...document.querySelectorAll('.token')].find(t=> t.dataset.tid===tid && !t.classList.contains('used'));
-    if (!token) return;
-
-    if (validate(slot, val)){
-      slot.textContent = val;
-      slot.classList.add('filled');
-      token.classList.add('used');
-      maybeUnlock();
-    } else {
-      slot.classList.add('bad');
-      msg.textContent = 'Denne nøgle passer ikke i det nøglehul.';
-      setTimeout(()=> slot.classList.remove('bad'), 650);
-    }
+  slot.addEventListener('dragover',e=>{e.preventDefault();slot.classList.add('ok');e.dataTransfer.dropEffect='move';});
+  slot.addEventListener('dragleave',()=>slot.classList.remove('ok'));
+  slot.addEventListener('drop',e=>{
+    e.preventDefault();slot.classList.remove('ok','bad');if(slot.classList.contains('filled'))return;
+    const val=Number(e.dataTransfer.getData('text/plain'));const tid=e.dataTransfer.getData('application/x-token-id');
+    const token=[...document.querySelectorAll('.token')].find(t=>t.dataset.tid===tid&&!t.classList.contains('used'));if(!token)return;
+    if(validate(slot,val)){slot.textContent=val;slot.classList.add('filled');token.classList.add('used');maybeUnlock();}
+    else{slot.classList.add('bad');msg.textContent='Denne nøgle passer ikke i det nøglehul.';setTimeout(()=>slot.classList.remove('bad'),650);}
   });
 });
-
-/* Matematik: (top + venstre) × højre = midten */
-function validate(slot, val){
-  const id = slot.dataset.id;
-  const [label, part] = id.split('-');
-
-  const data = {
-    A:{top:2,left:1,right:3,mid:9,   missing:null},
-    B:{top:4,left:2,right:null,mid:18,missing:'right'}, // =3
-    C:{top:null,left:1,right:2,mid:12,missing:'top'},   // =5
-    D:{top:2,left:5,right:null,mid:21,missing:'right'}, // =3
-    E:{top:3,left:null,right:4,mid:28,missing:'left'},  // =4
-    F:{top:6,left:2,right:5,mid:null, missing:'mid'},   // =40
+function validate(slot,val){
+  const id=slot.dataset.id;const[label,part]=id.split('-');
+  const data={
+    A:{top:2,left:1,right:3,mid:9,missing:null},
+    B:{top:4,left:2,right:null,mid:18,missing:'right'},
+    C:{top:null,left:1,right:2,mid:12,missing:'top'},
+    D:{top:2,left:5,right:null,mid:21,missing:'right'},
+    E:{top:3,left:null,right:4,mid:28,missing:'left'},
+    F:{top:6,left:2,right:5,mid:null,missing:'mid'},
   }[label];
-
-  const top  = (part==='top')  ? val : data.top;
-  const left = (part==='left') ? val : data.left;
-  const right= (part==='right')? val : data.right;
-  const mid  = (part==='mid')  ? val : data.mid;
-
-  switch (data.missing){
-    case 'right': return (top+left)*val===mid;
-    case 'top':   return (val+left)*right===mid;
-    case 'left':  return (top+val)*right===mid;
-    case 'mid':   return (top+left)*right===val;
-    default: return false;
+  const top=(part==='top')?val:data.top;
+  const left=(part==='left')?val:data.left;
+  const right=(part==='right')?val:data.right;
+  const mid=(part==='mid')?val:data.mid;
+  switch(data.missing){
+    case 'right':return(top+left)*val===mid;
+    case 'top':return(val+left)*right===mid;
+    case 'left':return(top+val)*right===mid;
+    case 'mid':return(top+left)*right===val;
+    default:return false;
   }
 }
-
-function maybeUnlock(){
-  const totalMissing = document.querySelectorAll('.slot').length;
-  const filled = document.querySelectorAll('.slot.filled').length;
-  if (filled === totalMissing){
-    unlock.style.display = 'block';
-    msg.textContent = 'Alle nøgler er sat korrekt!';
-  }
-}
-
-document.getElementById('reset').addEventListener('click', ()=>{
-  document.querySelectorAll('.slot').forEach(s=>{
-    s.textContent = (s.dataset.part==='mid' ? '🔒' : '🔑');
-    s.classList.remove('filled','ok','bad');
-  });
-  document.querySelectorAll('.token').forEach(t=> t.classList.remove('used'));
-  unlock.style.display='none';
-  msg.textContent='Find de rigtige nøgler…';
-});
+function maybeUnlock(){const totalMissing=document.querySelectorAll('.slot').length;const filled=document.querySelectorAll('.slot.filled').length;if(filled===totalMissing){unlock.style.display='block';msg.textContent='Alle nøgler er sat korrekt!';}}
+document.getElementById('reset').addEventListener('click',()=>{document.querySelectorAll('.slot').forEach(s=>{s.textContent=(s.dataset.part==='mid'?'🔒':'🔑');s.classList.remove('filled','ok','bad');});document.querySelectorAll('.token').forEach(t=>t.classList.remove('used'));unlock.style.display='none';msg.textContent='Find de rigtige nøgler…';});
 </script>
 </body>
 </html>
