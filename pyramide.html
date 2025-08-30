@@ -5,7 +5,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Empty Well Archives – Nøgletrekanten</title>
 <style>
-  /* --- Basestil (samme vibe som Kryptex) --- */
   html,body{height:100%;margin:0}
   body{
     min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;
@@ -17,38 +16,32 @@
   h1{margin:8px 0 2px 0;font-size:1.9rem;letter-spacing:.5px;color:#f5e4a6;text-shadow:0 2px 10px #000}
   .sub{opacity:.95;margin-bottom:18px}
 
-  .walls{
-    width:100%;display:grid;gap:18px;
-    grid-template-columns:1fr 1fr;
-  }
+  .walls{width:100%;display:grid;gap:18px;grid-template-columns:1fr 1fr;}
   @media (max-width:900px){ .walls{grid-template-columns:1fr} }
 
   .panel{
     width:100%;background:#1b1208d0;border:1.5px solid #bba753;border-radius:12px;
     box-shadow:0 4px 22px #000a;padding:16px
   }
-  .panel h2{
-    margin:0 0 10px 0;font-size:1.15rem;color:#e8d387;font-weight:700;letter-spacing:.3px
-  }
+  .panel h2{margin:0 0 10px 0;font-size:1.15rem;color:#e8d387;font-weight:700;letter-spacing:.3px}
 
   .board{display:grid;grid-template-columns:repeat(3,minmax(180px,1fr));gap:14px;justify-items:center}
   @media (max-width:1100px){.board{grid-template-columns:repeat(2,minmax(180px,1fr))}}
   @media (max-width:560px){.board{grid-template-columns:1fr}}
 
-  /* Trekant-kort */
   .tri-card{background:#0f0b05c0;border:1.5px solid #8c7b3f;border-radius:12px;box-shadow:0 3px 14px #000b;padding:10px 8px;width:100%;display:flex;flex-direction:column;align-items:center}
   .tri-title{font-weight:800;margin:2px 0 6px 0;color:#e8d387;letter-spacing:.4px}
   .tri{width:200px;height:170px;position:relative;isolation:isolate}
   svg{width:100%;height:100%;display:block}
-  .center-num{position:absolute;inset:auto;left:50%;top:54%;transform:translate(-50%,-50%);font-size:28px;font-weight:900;color:#ffdf91;text-shadow:0 1px 6px #000}
+  .center-num{position:absolute;left:50%;top:54%;transform:translate(-50%,-50%);font-size:28px;font-weight:900;color:#ffdf91;text-shadow:0 1px 6px #000}
   .corner{position:absolute;font-size:20px;font-weight:900;color:#ffd36b;text-shadow:0 1px 5px #000}
   .corner.top{left:50%;top:-6px;transform:translateX(-50%)}
   .corner.left{left:-6px;bottom:10px}
   .corner.right{right:-6px;bottom:10px}
 
-  /* Nøglehul (drop-slot) */
+  /* Nøglehul */
   .slot{
-    position:absolute;display:flex;align-items:center;justify-content:center;gap:6px;
+    position:absolute;display:flex;align-items:center;justify-content:center;
     width:46px;height:46px;border-radius:10px;border:2px dashed #d9bc6b;background:#2b1a0d;
     color:#9b8650;font-weight:900;font-size:20px;box-shadow:inset 0 1px 6px #0008;
   }
@@ -61,6 +54,269 @@
   .slot.ok{outline:2px solid #57c979}
   .slot.bad{outline:2px solid #e46b42}
 
-  /* Gulv med nøgler */
   .floor{margin-top:18px;padding:16px 12px;background:#1b1208;border:1.5px solid #bba753;border-radius:10px;box-shadow:inset 0 2px 10px #000}
-  .pool{display:flex;flex-wrap:
+  .pool{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;max-width:900px}
+
+  .token{
+    user-select:none;cursor:grab;display:flex;align-items:center;justify-content:center;gap:6px;
+    padding:6px 10px;border-radius:12px;font-weight:900;font-size:18px;line-height:1;
+    color:#4e3620;background:linear-gradient(135deg,#f7e9b5 0%,#bba753 100%);
+    border:2px solid #8c7b3f;box-shadow:0 3px 10px #0007;min-width:56px;height:48px;
+  }
+  .token svg{width:18px;height:18px}
+  .token:active{cursor:grabbing}
+  .token.used{opacity:.45;cursor:not-allowed;filter:grayscale(.12)}
+
+  .msg{margin:14px 0 4px 0;min-height:28px;color:#f5e4a6;text-align:center}
+  .unlock{
+    margin-top:16px;padding:14px 18px;background:#f0e5c0;border:2px solid #bba753;border-radius:12px;box-shadow:0 4px 22px #a58b3a55;color:#6d5a21;display:none
+  }
+  .btn{margin-top:12px;padding:10px 18px;border-radius:10px;border:2px solid #bba753;background:linear-gradient(90deg,#fff6c6 0%,#e8d387 100%);font-weight:800;color:#6d5a21;cursor:pointer}
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <h1>Nøgletrekanten</h1>
+    <div class="sub">Regel (skjult i væggenes mønster): <em>(top + venstre) × højre = midten</em>. Brug nøglerne til at udfylde nøglehullerne. Én trekant er helt udfyldt som eksempel.</div>
+
+    <div class="walls">
+      <!-- Væg I -->
+      <section class="panel">
+        <h2>Væg I</h2>
+        <div class="board">
+          <!-- A – fuld (facit) -->
+          <div class="tri-card">
+            <div class="tri-title">A</div>
+            <div class="tri">
+              <div class="corner top">2</div>
+              <div class="corner left">1</div>
+              <div class="corner right">3</div>
+              <div class="center-num">9</div>
+              <svg viewBox="0 0 100 90" aria-hidden="true">
+                <polygon points="50,5 5,85 95,85" fill="#ff5ea5" opacity=".8" stroke="#27aac7" stroke-width="6" />
+              </svg>
+            </div>
+          </div>
+          <!-- B – mangler højre (3) -->
+          <div class="tri-card">
+            <div class="tri-title">B</div>
+            <div class="tri">
+              <div class="corner top">4</div>
+              <div class="corner left">2</div>
+              <div class="slot" data-part="right" data-id="B-right">🔑</div>
+              <div class="center-num">18</div>
+              <svg viewBox="0 0 100 90" aria-hidden="true">
+                <polygon points="50,5 5,85 95,85" fill="#ff5ea5" opacity=".8" stroke="#27aac7" stroke-width="6" />
+              </svg>
+            </div>
+          </div>
+          <!-- C – mangler top (5) -->
+          <div class="tri-card">
+            <div class="tri-title">C</div>
+            <div class="tri">
+              <div class="slot" data-part="top" data-id="C-top">🔑</div>
+              <div class="corner left">1</div>
+              <div class="corner right">2</div>
+              <div class="center-num">12</div>
+              <svg viewBox="0 0 100 90" aria-hidden="true">
+                <polygon points="50,5 5,85 95,85" fill="#ff5ea5" opacity=".8" stroke="#27aac7" stroke-width="6" />
+              </svg>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Væg II -->
+      <section class="panel">
+        <h2>Væg II</h2>
+        <div class="board">
+          <!-- D – mangler højre (3) -->
+          <div class="tri-card">
+            <div class="tri-title">D</div>
+            <div class="tri">
+              <div class="corner top">2</div>
+              <div class="corner left">5</div>
+              <div class="slot" data-part="right" data-id="D-right">🔑</div>
+              <div class="center-num">21</div>
+              <svg viewBox="0 0 100 90" aria-hidden="true">
+                <polygon points="50,5 5,85 95,85" fill="#ff5ea5" opacity=".8" stroke="#27aac7" stroke-width="6" />
+              </svg>
+            </div>
+          </div>
+          <!-- E – mangler venstre (4) -->
+          <div class="tri-card">
+            <div class="tri-title">E</div>
+            <div class="tri">
+              <div class="corner top">3</div>
+              <div class="slot" data-part="left" data-id="E-left">🔑</div>
+              <div class="corner right">4</div>
+              <div class="center-num">28</div>
+              <svg viewBox="0 0 100 90" aria-hidden="true">
+                <polygon points="50,5 5,85 95,85" fill="#ff5ea5" opacity=".8" stroke="#27aac7" stroke-width="6" />
+              </svg>
+            </div>
+          </div>
+          <!-- F – mangler midten (40) -->
+          <div class="tri-card">
+            <div class="tri-title">F</div>
+            <div class="tri">
+              <div class="corner top">6</div>
+              <div class="corner left">2</div>
+              <div class="corner right">5</div>
+              <div class="slot" data-part="mid" data-id="F-mid">🔒</div>
+              <svg viewBox="0 0 100 90" aria-hidden="true">
+                <polygon points="50,5 5,85 95,85" fill="#ff5ea5" opacity=".8" stroke="#27aac7" stroke-width="6" />
+              </svg>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <div class="msg" id="msg">Find de rigtige nøgler…</div>
+
+    <div class="floor">
+      <div class="pool" id="pool">
+        <!-- Nøgler (inkl. “decoys”) -->
+        <div class="token" draggable="true" data-val="1">1</div>
+        <div class="token" draggable="true" data-val="2">2</div>
+        <div class="token" draggable="true" data-val="3">3</div>
+        <div class="token" draggable="true" data-val="3">3</div>
+        <div class="token" draggable="true" data-val="4">4</div>
+        <div class="token" draggable="true" data-val="4">4</div>
+        <div class="token" draggable="true" data-val="5">5</div>
+        <div class="token" draggable="true" data-val="6">6</div>
+        <div class="token" draggable="true" data-val="7">7</div>
+        <div class="token" draggable="true" data-val="8">8</div>
+        <div class="token" draggable="true" data-val="9">9</div>
+        <div class="token" draggable="true" data-val="10">10</div>
+        <div class="token" draggable="true" data-val="12">12</div>
+        <div class="token" draggable="true" data-val="14">14</div>
+        <div class="token" draggable="true" data-val="18">18</div>
+        <div class="token" draggable="true" data-val="20">20</div>
+        <div class="token" draggable="true" data-val="30">30</div>
+        <div class="token" draggable="true" data-val="40">40</div>
+      </div>
+    </div>
+
+    <div class="unlock" id="unlock">
+      Låsemekanismen klikker – de to vægge drejer og afslører passagen.
+      <div><button class="btn" id="reset">Nulstil</button></div>
+    </div>
+  </div>
+
+<script>
+/* Hjælp: giv hver token et unikt id (så to "3" kan bruges separat) */
+document.querySelectorAll('.token').forEach(t=>{
+  t.dataset.tid = Math.random().toString(36).slice(2);
+});
+
+/* DnD */
+const pool = document.getElementById('pool');
+const msg  = document.getElementById('msg');
+const slots= document.querySelectorAll('.slot');
+const unlock = document.getElementById('unlock');
+
+pool.addEventListener('dragstart', e =>{
+  const t = e.target;
+  if (!t.classList.contains('token') || t.classList.contains('used')) return;
+  e.dataTransfer.setData('text/plain', t.dataset.val);
+  e.dataTransfer.setData('application/x-token-id', t.dataset.tid);
+  e.dataTransfer.effectAllowed = 'move';
+});
+
+slots.forEach(slot=>{
+  slot.addEventListener('dragover', e =>{ e.preventDefault(); slot.classList.add('ok'); e.dataTransfer.dropEffect='move'; });
+  slot.addEventListener('dragleave', ()=> slot.classList.remove('ok'));
+  slot.addEventListener('drop', e =>{
+    e.preventDefault();
+    slot.classList.remove('ok','bad');
+    if (slot.classList.contains('filled')) return;
+
+    const val = Number(e.dataTransfer.getData('text/plain'));
+    const tid = e.dataTransfer.getData('application/x-token-id');
+    const token = [...document.querySelectorAll('.token')].find(t=> t.dataset.tid===tid && !t.classList.contains('used'));
+    if (!token) return;
+
+    if (validate(slot, val)){
+      slot.textContent = val;
+      slot.classList.add('filled');
+      token.classList.add('used');
+      maybeUnlock();
+    } else {
+      slot.classList.add('bad');
+      msg.textContent = 'Denne nøgle passer ikke i det nøglehul.';
+      setTimeout(()=> slot.classList.remove('bad'), 650);
+    }
+  });
+});
+
+/* Validering pr. slot ud fra opgaven: (top + venstre) × højre = midten */
+function validate(slot, val){
+  const id = slot.dataset.id; // fx "B-right"
+  const [label, part] = id.split('-');
+
+  // Slå talene op for hver trekant
+  const data = {
+    A:{top:2,left:1,right:3,mid:9, missing:null},
+    B:{top:4,left:2,right:null,mid:18, missing:'right'},   // right=3
+    C:{top:null,left:1,right:2,mid:12, missing:'top'},     // top=5
+    D:{top:2,left:5,right:null,mid:21, missing:'right'},   // right=3
+    E:{top:3,left:null,right:4,mid:28, missing:'left'},    // left=4
+    F:{top:6,left:2,right:5,mid:null, missing:'mid'},      // mid=40
+  }[label];
+
+  // aktuelle værdier inkl. forsøgt drop
+  const top  = (part==='top')  ? val : data.top;
+  const left = (part==='left') ? val : data.left;
+  const right= (part==='right')? val : data.right;
+  const mid  = (part==='mid')  ? val : data.mid;
+
+  switch (data.missing){
+    case 'right': {
+      if (top==null || left==null || mid==null) return false;
+      const need = mid / (top + left);
+      return Number.isFinite(need) && Math.round(need)===need && val===need;
+    }
+    case 'top': {
+      if (right==null || left==null || mid==null) return false;
+      const need = (mid / right) - left;
+      return Number.isFinite(need) && Math.round(need)===need && val===need;
+    }
+    case 'left': {
+      if (right==null || top==null || mid==null) return false;
+      const need = (mid / right) - top;
+      return Number.isFinite(need) && Math.round(need)===need && val===need;
+    }
+    case 'mid': {
+      if (right==null || top==null || left==null) return false;
+      const need = (top + left) * right;
+      return val===need;
+    }
+    default:
+      return false;
+  }
+}
+
+function maybeUnlock(){
+  const totalMissing = document.querySelectorAll('.slot').length; // 5
+  const filled = document.querySelectorAll('.slot.filled').length;
+  if (filled === totalMissing){
+    unlock.style.display = 'block';
+    msg.textContent = 'Alle nøgler er sat korrekt!';
+  }
+}
+
+/* Reset */
+document.getElementById('reset').addEventListener('click', ()=>{
+  document.querySelectorAll('.slot').forEach(s=>{
+    s.textContent = (s.dataset.part==='mid' ? '🔒' : '🔑');
+    s.classList.remove('filled','ok','bad');
+  });
+  document.querySelectorAll('.token').forEach(t=> t.classList.remove('used'));
+  unlock.style.display='none';
+  msg.textContent='Find de rigtige nøgler…';
+});
+</script>
+</body>
+</html>
