@@ -1,685 +1,189 @@
 <!DOCTYPE html>
 <html lang="da">
 <head>
-  <meta charset="UTF-8">
-  <title>Kryptex</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Stormholde – Miniopgaver</title>
+
+  <!-- Valgfrie skrifter til samme vibe -->
+  <link href="https://fonts.googleapis.com/css2?family=IM+Fell+English:ital,wght@0,400;1,400&family=Segoe+UI:wght@400;600;700&display=swap" rel="stylesheet">
+
   <style>
-    html, body {
-      height: 100%;
-      margin: 0;
-      padding: 0;
+    :root{
+      --gold:#bba753;
+      --parch:#f7e9b5;
+      --ink:#4e3620;
+      --bg1:#4e3620;
+      --bg2:#2b1a0d;
     }
-    body {
-      height: 100vh;
-      min-height: 100vh;
-      width: 100vw;
-      min-width: 100vw;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      font-family: 'Segoe UI', sans-serif;
-      background: radial-gradient(ellipse at 50% 40%, #4e3620 0%, #2b1a0d 100%);
-      background-attachment: fixed;
-      box-sizing: border-box;
+    *{box-sizing:border-box}
+    html,body{height:100%;margin:0}
+    body{
+      min-height:100vh;min-width:100vw;
+      display:flex;align-items:center;justify-content:center;flex-direction:column;
+      font-family:'Segoe UI', system-ui, -apple-system, sans-serif;
+      background: radial-gradient(ellipse at 50% 40%, var(--bg1) 0%, var(--bg2) 100%);
+      background-attachment:fixed;
+      color:#e9d9a8;
     }
-    .center-wrap {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      min-height: 80vh;
-      width: 100vw;
+
+    .wrap{
+      width:min(1100px,95vw);
+      padding:32px 18px 42px;
+      display:flex;flex-direction:column;align-items:center;gap:22px;
     }
-    .clues {
-      width: 420px;
-      max-width: 99vw;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      margin-bottom: 18px;
+
+    .brand{
+      text-align:center;
+      user-select:none;
     }
-    .clue-input-row {
-      margin: 0 0 16px 0;
-      display: flex;
-      gap: 10px;
-      justify-content: center;
-      align-items: center;
+    .brand h1{
+      margin:0;
+      font-family:'IM Fell English', serif;
+      font-size:clamp(28px,5vw,48px);
+      letter-spacing:1px;
+      color:#ffe5a5;
+      text-shadow:0 2px 18px #000a;
     }
-    .clue-inp {
-      padding: 8px 12px;
-      border-radius: 7px;
-      border: 1.5px solid #bba753;
-      background: #f7e9b5;
-      color: #4e3620;
-      font-size: 1.1em;
-      width: 140px;
-      outline: none;
-      font-family: inherit;
+    .brand p{
+      margin:6px 0 0 0;
+      font-size:clamp(14px,2.2vw,18px);
+      color:#e2c17d;
+      opacity:.95;
     }
-    .clue-btn {
-      background: linear-gradient(90deg, #f7e9b5 0%, #bba753 100%);
-      border: none;
-      border-radius: 8px;
-      color: #6d5a21;
-      font-size: 1.02em;
-      font-weight: bold;
-      padding: 8px 22px;
-      cursor: pointer;
-      transition: background 0.18s;
-      box-shadow: 0 2px 10px #bba75344;
-      font-family: inherit;
+
+    .panel{
+      width:100%;
+      background:#1b1208d0;
+      border:1.5px solid var(--gold);
+      border-radius:14px;
+      box-shadow:0 6px 28px #0009, 0 0 0 6px #ad995422;
+      padding:18px;
     }
-    .clue-btn:active {
-      background: #f7e9b5;
+
+    .grid{
+      display:grid;
+      grid-template-columns:repeat(auto-fit, minmax(260px, 1fr));
+      gap:16px;
     }
-    .clue-success {
-      color: #76e06a;
-      font-size: 1em;
-      margin-top: 7px;
-      text-align: center;
-      min-height: 1.2em;
+
+    .card{
+      background:linear-gradient(135deg, var(--parch) 20%, #e9d89a 100%);
+      border:2px solid #8c7b3f;
+      border-radius:14px;
+      color:var(--ink);
+      box-shadow:0 4px 18px #6d5a2155;
+      display:flex;flex-direction:column;justify-content:space-between;
+      min-height:200px;
+      position:relative;
+      overflow:hidden;
     }
-    .revealed {
-      margin-bottom: 13px;
-      line-height: 1.4;
-      background: #1b1208d0;
-      padding: 12px 16px;
-      border-radius: 7px;
-      border: 1.5px solid #bba753;
-      box-shadow: 0 2px 10px #0006;
-      color: #ffe5a5;
-      font-family: 'IM Fell English', serif;
-      width: 100%;
-      margin-top: 10px;
+    .card::after{
+      content:"";
+      position:absolute;inset:0;
+      background:radial-gradient(200px 140px at 110% -10%, #fff6 0%, transparent 60%) no-repeat;
+      pointer-events:none;
     }
-    .clue-label {
-      font-size: 1.14em;
-      color: #e2c17d;
-      font-family: 'Segoe UI', sans-serif;
-      font-weight: bold;
-      display: block;
-      margin-bottom: 3px;
+    .card .inner{padding:18px}
+    .card .eyebrow{
+      font-weight:700;color:#6d5a21;letter-spacing:.08em;
+      text-transform:uppercase;font-size:.78rem;margin-bottom:6px;
     }
-    #cluesArea {
-      width: 100%;
-      max-width: 420px;
-      max-height: 230px;
-      overflow-y: auto;
-      margin-top: 8px;
-      margin-bottom: 0;
-      display: flex;
-      flex-direction: column;
-      gap: 7px;
-      scrollbar-color: #bba753 #1b1208;
-      scrollbar-width: thin;
+    .card h3{
+      margin:0 0 6px 0;font-size:1.35rem;color:#3b2a16;
+      font-family:'IM Fell English', serif;
     }
-    #cluesArea::-webkit-scrollbar {
-      width: 8px;
+    .card p{margin:0;color:#4e3620cc;line-height:1.35}
+    .actions{display:flex;gap:10px;padding:0 18px 18px 18px}
+
+    .btn{
+      background:linear-gradient(90deg, var(--parch) 0%, var(--gold) 100%);
+      border:2px solid var(--gold);
+      border-radius:10px;
+      color:#6d5a21;font-weight:800;letter-spacing:.08em;
+      padding:10px 16px;cursor:pointer;
+      box-shadow:0 2px 10px #bba75355;
+      text-decoration:none;text-align:center;flex:0 0 auto;
+      transition:transform .08s ease, filter .15s ease, background .15s ease;
     }
-    #cluesArea::-webkit-scrollbar-thumb {
-      background: #bba753;
-      border-radius: 4px;
+    .btn:active{transform:translateY(1px)}
+    .btn.secondary{background:#fdf6c1;border-color:#8c7b3f}
+
+    .rules{
+      display:flex;gap:14px;align-items:flex-start;flex-wrap:wrap;
+      color:#e2c17d;font-size:.98rem;
     }
-    .kryptex-outer {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin: 38px 0 17px 0;
-      background: none;
+    .rule-badge{
+      background:#2b1a0d;border:1.5px solid var(--gold);
+      border-radius:8px;padding:8px 12px;box-shadow:0 2px 10px #0008;
     }
-    .kryptex-endcap {
-      width: 36px;
-      height: 120px;
-      background: linear-gradient(135deg, #b2a163 0%, #6d5a21 100%);
-      border-radius: 14px 40px 40px 14px/60px 60px 60px 60px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin: 0 0;
-      box-shadow: 0 2px 14px #a58b3a66;
-      border: 2px solid #8c7b3f;
-      font-size: 2.5em;
-      color: #6d5a21;
-      font-weight: bold;
-      user-select: none;
+
+    footer{
+      margin-top:8px;font-size:.9rem;color:#c9b37b;opacity:.9;text-align:center;
     }
-    .kryptex-endcap.right {
-      transform: scaleX(-1);
-      border-radius: 40px 14px 14px 40px/60px 60px 60px 60px;
+
+    /* små detaljer for keyboard & hover */
+    a.btn:focus-visible, .btn:focus-visible{
+      outline:3px solid #fff7; outline-offset:2px;
     }
-    .kryptex-rings {
-      display: flex;
-      gap: 0;
-      background: #d2bd7f;
-      border-radius: 18px;
-      box-shadow: 0 4px 32px #7c6e2d66, 0 0 0 6px #ad9954, 0 0 0 12px #cfc39155;
-      border: 2px solid #bba753;
-      padding: 24px 8px;
-    }
-    .kryptex-ring {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      background: linear-gradient(135deg, #f7e9b5 20%, #bba753 80%);
-      border: 2px solid #8c7b3f;
-      border-radius: 8px;
-      box-shadow: 0 2px 12px #6d5a2155;
-      width: 54px;
-      height: 110px;
-      margin: 0 2px;
-      position: relative;
-      z-index: 1;
-    }
-    .arrow-btn {
-      background: linear-gradient(90deg, #bba753 0%, #fdf6c1 100%);
-      border: 1px solid #8c7b3f;
-      border-radius: 5px;
-      color: #4c3e1f;
-      font-size: 1.15em;
-      font-weight: bold;
-      width: 38px;
-      height: 23px;
-      cursor: pointer;
-      margin: 4px 0 0 0;
-      box-shadow: 0 1px 2px #2223;
-      transition: background 0.1s;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      z-index: 5;
-      position: relative;
-      padding: 0;
-    }
-    .arrow-btn:last-child {
-      margin: 4px 0 4px 0;
-    }
-    .arrow-btn:active {
-      background: #f7e9b5;
-    }
-    .kryptex-letter {
-      font-size: 2.1em;
-      font-family: 'Courier New', Courier, monospace;
-      color: #4c3e1f;
-      background: #fdf6c1;
-      border-radius: 4px;
-      margin: 7px 0;
-      width: 90%;
-      height: 42px;
-      text-align: center;
-      box-shadow: 0 2px 6px #fff2, 0 0 0 1px #bba753;
-      border: 1px solid #8c7b3f66;
-      font-weight: bold;
-      letter-spacing: 2px;
-      user-select: none;
-      transition: background 0.15s, color 0.2s;
-      position: relative;
-      z-index: 2;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-    .kryptex-letter-input {
-      position: absolute;
-      left: 0;
-      top: 0;
-      width: 100%;
-      height: 100%;
-      background: transparent;
-      color: transparent;
-      border: none;
-      outline: none;
-      font-size: 2.1em;
-      font-family: 'Courier New', Courier, monospace;
-      text-align: center;
-      font-weight: bold;
-      z-index: 3;
-      cursor: pointer;
-      caret-color: #4c3e1f;
-    }
-    .kryptex-letter-input:focus {
-      background: #fff8d7b0;
-      color: #4c3e1f;
-      border-radius: 4px;
-      outline: 2px solid #bba753;
-      z-index: 4;
-    }
-    .open-btn {
-      padding: 14px 45px;
-      font-size: 1.3em;
-      background: linear-gradient(90deg, #f7e9b5 0%, #bba753 100%);
-      color: #6d5a21;
-      border: none;
-      border-radius: 12px;
-      cursor: pointer;
-      font-weight: bold;
-      margin-bottom: 10px;
-      box-shadow: 0 2px 12px #bba75355;
-      letter-spacing: 2px;
-      transition: background 0.2s;
-      border: 2px solid #bba753;
-    }
-    .open-btn:disabled {
-      opacity: 0.6;
-      cursor: not-allowed;
-      filter: grayscale(1);
-    }
-    .open-btn:hover:not(:disabled) {
-      background: linear-gradient(90deg, #fff6c6 0%, #e8d387 100%);
-    }
-    #resultat {
-      margin-top: 10px;
-      font-size: 1.2em;
-      color: #e2c17d;
-      min-height: 2.2em;
-      font-family: 'Segoe UI', monospace;
-      text-shadow: 0 1px 10px #2b1a0d, 0 0 5px #0007;
-    }
-    .attempts {
-      margin: 16px 0 0 0;
-      min-height: 90px;
-      width: 100%;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-    }
-    .attempt-row {
-      display: flex;
-      gap: 5px;
-      margin-bottom: 6px;
-    }
-    .attempt-letter {
-      width: 44px;
-      height: 48px;
-      border-radius: 6px;
-      font-size: 2em;
-      font-family: 'Courier New', Courier, monospace;
-      font-weight: bold;
-      text-align: center;
-      line-height: 48px;
-      background: #2b1a0d;
-      color: #e2c17d;
-      border: 1.5px solid #8c7b3f;
-      box-shadow: 0 2px 8px #000c;
-      transition: background 0.2s, color 0.2s;
-    }
-    .attempt-letter.green {
-      background: #3ca366;
-      color: #fff;
-      border-color: #1e6941;
-    }
-    .attempt-letter.yellow {
-      background: #d9d9d9;
-      color: #2b1a0d;
-      border-color: #bba753;
-    }
-    .attempt-letter.gray {
-      background: #393939;
-      color: #c8c8c8;
-      border-color: #222;
-    }
-    .secret-scroll {
-      margin: 30px auto 0;
-      width: 390px;
-      max-width: 95vw;
-      background: #f0e5c0;
-      border: 2px solid #bba753;
-      border-radius: 12px;
-      box-shadow: 0 4px 22px #a58b3a55;
-      padding: 20px 28px;
-      color: #6d5a21;
-      font-family: 'IM Fell English', serif;
-      font-size: 1.14em;
-      display: none;
-      animation: scroll-in 1s;
-      white-space: pre-line;
-    }
-    .broken-msg {
-      color: #e46b42;
-      text-align: center;
-      font-size: 1.2em;
-      margin-top: 30px;
-      background: #2b1a0d;
-      border: 2px solid #e46b42;
-      border-radius: 8px;
-      padding: 16px 24px;
-      box-shadow: 0 3px 20px #000b;
-      font-family: 'IM Fell English', serif;
-      max-width: 420px;
-    }
-    @keyframes scroll-in {
-      from { opacity: 0; transform: scaleY(0.3) translateY(50px);}
-      to { opacity: 1; transform: scaleY(1) translateY(0);}
-    }
+    .card:has(a.btn:hover){filter:saturate(1.03)}
   </style>
 </head>
 <body>
-  <div class="center-wrap">
-    <div class="clues">
-      <div class="clue-input-row">
-        <input class="clue-inp" id="clueInput" type="text" placeholder="Indtast kodeord..." autocomplete="off" />
-        <button class="clue-btn" onclick="unlockClue()">Lås op</button>
+  <div class="wrap">
+    <header class="brand">
+      <h1>Stormholde Arkiv</h1>
+      <p>Små give-outs og miniopgaver til dine spillere – samme look &amp; feel som Kryptex.</p>
+    </header>
+
+    <section class="panel">
+      <div class="grid" role="list">
+        <!-- KRYPTEX -->
+        <article class="card" role="listitem">
+          <div class="inner">
+            <div class="eyebrow">🗝️ Puzzle</div>
+            <h3>Kryptex</h3>
+            <p>Drej ringene, gæt ordet, og lås den gamle pergamentrulle op. Inkluderer
+              ledetråde der kan låses op med koder.</p>
+          </div>
+          <div class="actions">
+            <a class="btn" href="./kryptex/">Start</a>
+            <a class="btn secondary" href="./kryptex/" aria-label="Åbn Kryptex i samme fane">Detaljer</a>
+          </div>
+        </article>
+
+        <!-- PYRAMIDE-TAL -->
+        <article class="card" role="listitem">
+          <div class="inner">
+            <div class="eyebrow">🔺 Talmagi</div>
+            <h3>Pyramide-tal</h3>
+            <p>En numerisk udfordring fra arkivets støvede hylder. Manipulér tallene og
+              find mønstret, der åbner vejen videre.</p>
+          </div>
+          <div class="actions">
+            <a class="btn" href="./pyramide-tal/">Start</a>
+            <a class="btn secondary" href="./pyramide-tal/">Detaljer</a>
+          </div>
+        </article>
+
+        <!-- PLADS TIL FLERE OPGAVER -->
+        <!--
+        Kopiér blot et <article class="card">…</article> og ret titel/links,
+        når du tilføjer flere miniopgaver.
+        -->
       </div>
-      <div id="clueSuccess" class="clue-success"></div>
-      <div id="cluesArea"></div>
-    </div>
-    <div class="kryptex-outer">
-      <span class="kryptex-endcap">◀</span>
-      <div class="kryptex-rings" id="rings"></div>
-      <span class="kryptex-endcap right">▶</span>
-    </div>
-    <button class="open-btn" id="openBtn" onclick="checkCode()" autofocus>Åbn Kryptex</button>
-    <div id="resultat"></div>
-    <div class="attempts" id="attempts"></div>
-    <div class="secret-scroll" id="scroll">
-<b>Til Calius Vendren</b>
+    </section>
 
-Jeg ved ikke længere, om jeg skriver til dig som ven…
-eller som vidne.
+    <section class="panel">
+      <div class="rules">
+        <div class="rule-badge">⏳ Typisk 3 forsøg pr. lås</div>
+        <div class="rule-badge">🧭 Ledetråde kan findes i spillet</div>
+        <div class="rule-badge">📜 Skriv koderne præcist (da)</div>
+        <div class="rule-badge">🤫 Ingen meta – spørg verden, ikke GM</div>
+      </div>
+    </section>
 
-Skyggerne er begyndt at huske.
-Spejle, der før kun viste lys, vender sig nu væk.
-Og hun –
-hun rører ved verden igen.
-
-Det, vi gemte, er fundet.
-Det, vi nægtede at sige højt, hviskes nu i mørket.
-
-Om 100 dage vil dørene åbne sig på ny.
-Stormholde Akademiet – stedet vi forlod i tavshed – vil stå klar.
-Ikke for læring. Ikke for frelse.
-
-Men for noget andet.
-
-Du må finde det, før han gør.
-Skyggens Skår.
-
-Rejs til Dun Borradh.
-Ned under bjergene – til Brudkammeret.
-Der hvor stemmer forstummer og tavshed vejer tungere end sten.
-Der vogter Vareth Lorn.
-Han venter – og han husker dig.
-
-Men skåret gives kun én gang.
-Og den sortblodede mand er allerede på vej.
-
-Når dørene åbnes i Thundralis, vil intet længere være skjult.
-Og vi vil alle se, hvad der sker, når mørket bliver budt velkommen.
-
-Hun ser dig nu.
-Glem det ikke.
-
-– M
-    </div>
-    <div class="broken-msg" id="brokenMsg" style="display:none;">
-      Kryptexen knækker med en metallisk lyd.<br>
-      Ingen vej tilbage – hemmeligheden går tabt i mørket.<br>
-      <span style="font-size:1.2em;">🗝️</span>
-    </div>
+    <footer>© Stormholde – Arkivet vågner kun for den tålmodige.</footer>
   </div>
-  <script>
-    // LEDETRÅDE MED KODER
-    const cluesData = [
-      {
-        code: "nautica",
-        label: "🗺️ Kaptajnens Kahyt",
-        clue: `En gammel logbog er delvist ødelagt af vand.<br><br>
-        <i>“Hun hviskede mit navn, men jeg glemte det, så snart jeg så hendes øjne. Alt hvad der blev tilbage… var fornemmelsen af noget jeg burde have husket.”</i>`
-      },
-      {
-        code: "genskin",
-        label: "🐚 Et spejl i besætningskvarteret",
-        clue: `<i>“De ser dig ikke. Men dine bånd følger med i spejlet.”</i>`
-      },
-      {
-        code: "forseglet",
-        label: "📦 En glemt kiste i lastrummet",
-        clue: `En æske med et spejlskår, en hårlok og en ravn fjer. Indvendigt i låget er der skrevet med ridsede bogstaver:<br><br>
-        <i>“Skyggens gave: at du husker, det andre ønsker glemt.”</i>`
-      },
-      {
-        code: "firkant",
-        label: "📄 Lille sort Æske",
-        clue: `Indhold i æsken: En sammenfoldet note og en slidt messingplade.<br><br>
-        <b>Noten (håndskrift – samme som 'M'):</b><br>
-        <i>“Du husker det ikke – ikke sådan som det skete.<br>
-        Men noget i dig reagerer hver gang du ser det mønster.<br>
-        Fire hjørner.<br>
-        Én vej væk.<br>
-        Og det ord… det var ikke hendes navn.<br>
-        Det var løftet vi glemte.”</i>`
-      }
-    ];
-    let cluesRevealed = [false, false, false, false];
-    function renderClues() {
-      const area = document.getElementById("cluesArea");
-      area.innerHTML = "";
-      for (let i = 0; i < cluesData.length; i++) {
-        if (cluesRevealed[i]) {
-          area.innerHTML += `
-            <div class="revealed">
-              <span class="clue-label">${cluesData[i].label}</span>
-              ${cluesData[i].clue}
-            </div>
-          `;
-        }
-      }
-    }
-    function unlockClue() {
-      const inp = document.getElementById("clueInput");
-      const code = inp.value.trim().toLowerCase();
-      const msg = document.getElementById("clueSuccess");
-      let found = false;
-      if (code === "allez") {
-        cluesRevealed = [true, true, true, true];
-        found = true;
-      } else {
-        for (let i = 0; i < cluesData.length; i++) {
-          if (code === cluesData[i].code && !cluesRevealed[i]) {
-            cluesRevealed[i] = true;
-            found = true;
-          }
-        }
-      }
-      inp.value = "";
-      renderClues();
-      if (found) {
-        msg.textContent = "Ledetråd låst op!";
-      } else {
-        msg.textContent = "Ingen ledetråd fundet med den kode.";
-      }
-      setTimeout(() => { msg.textContent = ""; }, 1800);
-    }
-    renderClues();
-
-    // --- KRYPTEX LOGIK ---
-    const solution = "ERINDRING";
-    const wordLength = solution.length;
-    const maxAttempts = 3;
-    const bogstaver = "ABCDEFGHIJKLMNOPQRSTUVWXYZÆØÅ";
-    let ringState = Array(wordLength).fill(0);
-    let attempts = [];
-    let locked = false;
-
-    const ringContainer = document.getElementById("rings");
-    let ringInputs = [];
-
-    for (let i = 0; i < wordLength; i++) {
-      const ring = document.createElement("div");
-      ring.className = "kryptex-ring";
-      ring.tabIndex = 0;
-      ring.setAttribute('data-ring', i);
-
-      const upBtn = document.createElement("button");
-      upBtn.className = "arrow-btn";
-      upBtn.innerHTML = "▲";
-      upBtn.onclick = () => turnRing(i, 1);
-
-      // BOGSTAV VISNINGEN
-      const letter = document.createElement("div");
-      letter.className = "kryptex-letter";
-      letter.innerText = bogstaver[0];
-      letter.style.position = "relative";
-      letter.style.zIndex = "2";
-
-      // INPUT
-      const inp = document.createElement("input");
-      inp.className = "kryptex-letter-input";
-      inp.type = "text";
-      inp.maxLength = 1;
-      inp.autocomplete = "off";
-      inp.spellcheck = false;
-      inp.inputMode = "text";
-      inp.tabIndex = 0;
-      inp.setAttribute("aria-label", "Indtast bogstav");
-
-      ringInputs.push(inp);
-
-      // FOKUS VED KLIK
-      letter.addEventListener("click", () => {
-        inp.focus();
-        inp.select();
-      });
-
-      inp.addEventListener("input", e => {
-        if (locked) { inp.value = ""; return; }
-        let ch = inp.value.toUpperCase();
-        let idx = bogstaver.indexOf(ch);
-        if (idx !== -1) {
-          ringState[i] = idx;
-          updateRing(i);
-          // AUTOFOKUS til næste felt hvis ikke sidste
-          if (i < ringInputs.length - 1) {
-            setTimeout(() => {
-              ringInputs[i + 1].focus();
-              ringInputs[i + 1].select();
-            }, 0);
-          }
-        }
-        inp.value = "";
-      });
-
-      inp.addEventListener('keydown', e => {
-        if (locked) return;
-        if (e.key === "ArrowUp") {
-          turnRing(i, 1);
-          e.preventDefault();
-        } else if (e.key === "ArrowDown") {
-          turnRing(i, -1);
-          e.preventDefault();
-        } else if (e.key === "ArrowRight" || (e.key === "Tab" && !e.shiftKey)) {
-          if (i < wordLength - 1) {
-            ringInputs[i + 1].focus();
-            ringInputs[i + 1].select();
-            e.preventDefault();
-          }
-        } else if (e.key === "ArrowLeft" || (e.key === "Tab" && e.shiftKey)) {
-          if (i > 0) {
-            ringInputs[i - 1].focus();
-            ringInputs[i - 1].select();
-            e.preventDefault();
-          }
-        }
-      });
-
-      ring.addEventListener("focus", () => {
-        inp.focus();
-        inp.select();
-      });
-
-      const downBtn = document.createElement("button");
-      downBtn.className = "arrow-btn";
-      downBtn.innerHTML = "▼";
-      downBtn.onclick = () => turnRing(i, -1);
-
-      ring.appendChild(upBtn);
-      ring.appendChild(letter);
-      ring.appendChild(inp);
-      ring.appendChild(downBtn);
-
-      ringContainer.appendChild(ring);
-    }
-
-    function turnRing(idx, dir) {
-      if (locked) return;
-      ringState[idx] = (ringState[idx] + dir + bogstaver.length) % bogstaver.length;
-      updateRing(idx);
-    }
-    function updateRing(idx) {
-      const ring = ringContainer.children[idx];
-      const ch = bogstaver[ringState[idx]];
-      ring.querySelector('.kryptex-letter').innerText = ch;
-    }
-    function getGuess() {
-      return ringState.map(idx => bogstaver[idx]).join('');
-    }
-    function checkCode() {
-      if (locked) return;
-      const valgt = getGuess();
-      const resultat = document.getElementById("resultat");
-      const scroll = document.getElementById("scroll");
-      const attemptsDiv = document.getElementById("attempts");
-      const brokenMsg = document.getElementById("brokenMsg");
-      const openBtn = document.getElementById("openBtn");
-
-      if (valgt.length !== wordLength) return;
-
-      // Feedback-farver
-      const feedback = Array(wordLength).fill("gray");
-      const solutionArr = solution.split('');
-      const guessArr = valgt.split('');
-      let used = Array(wordLength).fill(false);
-      for (let i = 0; i < wordLength; i++) {
-        if (guessArr[i] === solutionArr[i]) {
-          feedback[i] = "green";
-          used[i] = true;
-        }
-      }
-      for (let i = 0; i < wordLength; i++) {
-        if (feedback[i] === "gray") {
-          for (let j = 0; j < wordLength; j++) {
-            if (!used[j] && guessArr[i] === solutionArr[j]) {
-              feedback[i] = "yellow";
-              used[j] = true;
-              break;
-            }
-          }
-        }
-      }
-      attempts.push({guess: valgt, feedback: feedback});
-      renderAttempts();
-      if (valgt === solution) {
-        resultat.innerHTML = "🔓 Kryptex åbnet! En gammel pergamentrulle ruller ud...";
-        scroll.style.display = 'block';
-        locked = true;
-        openBtn.disabled = true;
-      } else if (attempts.length >= maxAttempts) {
-        resultat.innerHTML = "";
-        scroll.style.display = 'none';
-        brokenMsg.style.display = 'block';
-        locked = true;
-        openBtn.disabled = true;
-      } else {
-        resultat.innerHTML = "❌ Forkert kode. Prøv igen! ("+(maxAttempts-attempts.length)+" forsøg tilbage)";
-        scroll.style.display = 'none';
-      }
-    }
-    function renderAttempts() {
-      const attemptsDiv = document.getElementById("attempts");
-      attemptsDiv.innerHTML = "";
-      for (let att of attempts) {
-        const row = document.createElement("div");
-        row.className = "attempt-row";
-        for (let i = 0; i < att.guess.length; i++) {
-          const letterDiv = document.createElement("div");
-          letterDiv.className = "attempt-letter " + att.feedback[i];
-          letterDiv.innerText = att.guess[i];
-          row.appendChild(letterDiv);
-        }
-        attemptsDiv.appendChild(row);
-      }
-    }
-  </script>
 </body>
 </html>
